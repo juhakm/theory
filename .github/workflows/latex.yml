@@ -17,6 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r simulations/${{ matrix.paper }}/requirements.txt
+
       - name: Install minimal LaTeX
         run: |
           sudo apt-get update
@@ -33,8 +42,13 @@ jobs:
             fonts-freefont-otf \
             fonts-lmodern
 
+      - name: Run Simulation to Generate Figures
+        run: |
+          python simulations/${{ matrix.paper }}/schwarzchild_entropy.py \
+            --output-dir source/${{ matrix.paper }}/illustrations
+
       - name: Compile LaTeX
-        working-directory: ${{ matrix.paper }}
+        working-directory: source/${{ matrix.paper }}
         run: |
           latexmk -pdf -interaction=nonstopmode -halt-on-error blackholeentropy.tex
 
@@ -42,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.paper }}-pdf
-          path: ${{ matrix.paper }}/blackholeentropy.pdf
+          path: source/${{ matrix.paper }}/blackholeentropy.pdf
