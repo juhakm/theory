@@ -45,10 +45,10 @@ jobs:
       - name: Run Simulation to Generate Figures
         run: |
           python simulations/${{ matrix.paper }}/schwarzchild_entropy.py \
-            --output-dir source/${{ matrix.paper }}/illustrations
+            --output-dir papers/${{ matrix.paper }}/illustrations
 
       - name: Compile LaTeX
-        working-directory: source/${{ matrix.paper }}
+        working-directory: papers/${{ matrix.paper }}
         run: |
           latexmk -pdf -interaction=nonstopmode -halt-on-error blackholeentropy.tex
 
@@ -56,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.paper }}-pdf
-          path: source/${{ matrix.paper }}/blackholeentropy.pdf
+          path: papers/${{ matrix.paper }}/blackholeentropy.pdf
