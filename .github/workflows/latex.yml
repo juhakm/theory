@@ -28,7 +28,7 @@ jobs:
       working-directory: ${{ matrix.paper }}
       run: |
         pdflatex -interaction=nonstopmode main.tex
-        bibtex main || true
+        bibtex blackholeentropy || true
         pdflatex -interaction=nonstopmode main.tex
         pdflatex -interaction=nonstopmode main.tex
 
