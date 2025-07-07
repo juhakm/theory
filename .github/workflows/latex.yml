@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         paper:
-          - blackholeentropy
+          - paper1
 
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
             fonts-freefont-otf \
             fonts-lmodern
 
-      - name: Compile LaTeX (with latexmk)
+      - name: Compile LaTeX
         working-directory: ${{ matrix.paper }}
         run: |
           latexmk -pdf -interaction=nonstopmode -halt-on-error blackholeentropy.tex
