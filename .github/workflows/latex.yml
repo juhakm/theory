@@ -20,15 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python dependencies
-        run: |
-          pip install -r simulations/${{ matrix.paper }}/requirements.txt
-
       - name: Install minimal LaTeX
         run: |
           sudo apt-get update
@@ -45,18 +36,21 @@ jobs:
             fonts-freefont-otf \
             fonts-lmodern
 
-      - name: Run Simulation to Generate Figures
-        run: |
-          python simulations/${{ matrix.paper }}/schwarzchild_entropy.py \
-            --output-dir papers/${{ matrix.paper }}/illustrations
-
-      - name: Compile LaTeX
+      - name: Compile all .tex files in folder
         working-directory: papers/${{ matrix.paper }}
         run: |
-          latexmk -pdf -interaction=nonstopmode -halt-on-error blackholeentropy.tex
+          mkdir -p ../../pdf/${{ matrix.paper }}
+          for texfile in *.tex; do
+            echo "Compiling $texfile"
+            latexmk -pdf -interaction=nonstopmode -halt-on-error "$texfile"
+            pdffile="${texfile%.tex}.pdf"
+            if [ -f "$pdffile" ]; then
+              cp "$pdffile" ../../pdf/${{ matrix.paper }}/
+            fi
+          done
 
-      - name: Upload PDF
+      - name: Upload PDFs
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.paper }}-pdf
-          path: papers/${{ matrix.paper }}/blackholeentropy.pdf
+          name: ${{ matrix.paper }}-pdfs
+          path: pdf/${{ matrix.paper }}/*.pdf
