@@ -249,8 +249,8 @@ def plot_average_heatmap(paths: List[Tuple[Tuple[int, ...], ...]]):
 if __name__ == "__main__":
     n_bits = 64
     time_steps = 64
-    particle_pattern = [0, 1, 0, 1, 0, 1, 0]
-    observer_pattern = [0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0]
+    particle_pattern = [0, 1, 0, 1, 1, 0, 1, 0]
+    observer_pattern = [0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0]
 
     print(f"Simulating universes with {n_bits} bits over {time_steps} time steps...")
 
