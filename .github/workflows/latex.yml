@@ -13,6 +13,7 @@ jobs:
       matrix:
         paper:
           - paper1
+          - paper2
 
     steps:
       - uses: actions/checkout@v4
