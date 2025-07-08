@@ -14,6 +14,7 @@ jobs:
         paper:
           - paper1
           - paper2
+          - paper3
 
     steps:
       - uses: actions/checkout@v4
