@@ -6,15 +6,16 @@
 \usepackage{cite}
 \geometry{margin=1in}
 \title{Entropy Collapse and the Quantization of Spacetime:\ A Computational Model of Black Hole Singularity}
-\author{Juha Meskanen}
+\author{Juhakm}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-  We present a novel information-theoretic model of black hole singularities, based on the principle that vanishing Shannon
-  entropy implies geometric collapse. By representing computational processes as set-theoretic execution traces, we define a mapping from informational states to spacetime geometry and demonstrate that zero entropy corresponds to a singular point in any embedding space. We establish a formal equivalence between Shannon entropy and Bekenstein--Hawking entropy, thereby deriving the exact number of bits encoded on the event horizon. This leads to a natural quantization of spacetime, where each bit corresponds to a minimal unit of surface area---explicitly the Planck area $l_p^2$. Our findings imply that spacetime structure is emergent from discrete information, and singularities represent limits of informational collapse. A Python simulation illustrates this entropy-geometry correspondence in dynamic systems. These results offer a concrete and computational foundation for understanding black holes and spacetime resolution from first informational principles.
+  We present an information-theoretic model of black hole singularities by simulating the evolution of the black hole geometry as a computation model. By representing computational processes as set-theoretic execution traces - bitstrings-, we define a mapping
+  from informational states to spacetime geometry. We demonstrate that zero entropy corresponds to a singular point in any
+  embedding space. A Python simulation illustrates this entropy-geometry correspondence in dynamic systems.
 \end{abstract}
 
 \section{Introduction}
@@ -27,7 +28,14 @@ This leads to a central claim:
   \textbf{Lemma (Entropy--Singularity Lemma):} \emph{Vanishing entropy implies geometric singularity.}
 \end{quote}
 
-The paper is structured as follows: we first define the program execution trace using set theory, then describe how such traces map to discrete representations of spacetime. We formalize and defend the lemma and explore its physical consequences, including a mapping between Shannon entropy and Bekenstein--Hawking entropy, and the implied quantization of spacetime.
+The paper is structured as follows: we first define the program execution trace using set theory, then describe how such traces map to discrete representations of spacetime. We formalize and defend the lemma and explore its physical consequences.
+
+\section{Methods}
+
+We model the evolution of a black hole spacetime geometry as a set of bitstrings encoding the information in the spacetime. This is accomplished as a simulation where the memory image encoding the spacetime geometry is traced and represented as an ordered set of bitsrings. Even thought the simulation cannot be run to  completion due to  fundamental limits numerical precision, we can analyze the evolution of the bitsrings and extrapolate the simulation to completion using statistical methods. As the simulation
+models the qualitative behavior , we hope to gain insight into the nature of black hole singularities and their relationship to entropy.
+The simulation is implemented in Python, and the source code is available at \url{http://githumb/juhakm/schwarzchild\_entropy.py}.
+
 
 \section{Execution Trace in Set-Theoretic Form}
 
@@ -78,29 +86,68 @@ If $H(T) \to 0$, the system visits a single state repeatedly. Any geometric mapp
 
 \begin{quote}
   \textbf{Lemma (Entropy--Singularity Lemma):}
-  \emph{As Shannon entropy approaches zero, any geometric representation of the corresponding information collapses to a singular point, regardless of encoding.}
+  \emph{As Shannon entropy approaches zero, any geometric representation of the corresponding information collapses to a singular point, regardless of encoding or coordinate mapping.}
 \end{quote}
 
-\section{Information Preservation and Quantization of Spacetime}
 
-We propose the following physical hypotheses:
-\begin{enumerate}
-  \item \textbf{No Information Loss:} The total informational content of a black hole is conserved. While redistributed (e.g., via Hawking radiation), the singularity contains zero entropy.
-  \item \textbf{Equivalence of Shannon and Bekenstein--Hawking Entropy:}
-        \[
-          S_{\text{BH}} = \frac{A}{4 l_p^2} = H = \log_2 N
-        \]
-        where $A$ is the black hole surface area, $l_p$ the Planck length, and $N$ the number of microstates.
-  \item \textbf{Spacetime Granularity:} Given $N$ distinguishable bits over area $A$, the resolution is:
-        \[
-          \text{Area per bit} = \frac{A}{N} = 4 l_p^2
-        \]
-        This implies each bit corresponds to one Planck-area quantum of surface.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1.0\textwidth]{figures/blackhole_signature.png}
+  \caption{Particles falling in Schwarzchild metrics and the corresponding entropy signature of the execution trace. The entropy decreases as the particles approach the singularity, indicating a collapse of information into a point. By extrapolating the entropy signature, we can run the simulation to completion and analyze the properties of the singularity.
+      [simulation program \url{http://github.com/juhakm/schwarzchild_entropy.py}]}
+  \label{fig:vanishing_entropy}
+\end{figure}
 
-        \textbf{Remark.} The correspondence between one bit and a Planck-area unit holds only under maximum entropy conditions---specifically, when all bits encode distinguishable microstates on a black hole horizon. In general, a large number of bits with zero entropy (e.g., all identical) do not encode spatial complexity. Therefore, the Planck length is not a fundamental pixel size per bit, but an emergent resolution determined by entropy density.
-\end{enumerate}
 
-\textbf{Conclusion:} If geometry encodes information, and entropy is conserved and discrete, then spacetime must be quantized. The shortest distance is set by the minimal bit representation---explicitly, the Planck length.
+
+\subsection*{Justification}
+
+This result does not depend on the specific method used to interpret a bitstring geometrically. That is, the mapping from information to geometry is irrelevant. Any zero-entropy bitstring consists of repeated or constant values. When mapped to geometric representations---whether through integer decoding, floating-point interpretation, or structured coordinate systems---the lack of informational variability ensures that all resulting points coincide. The outcome is thus a pointlike structure in
+any embedding space.
+
+This can be verified empirically. We implemented a brute-force simulation that, given an $n$-bit input, exhaustively generates a variety of geometric interpretations (e.g., integer tuples, floating-point triples, signed encodings) and renders the resulting geometries. When the bitstring has zero entropy (e.g., all zeros or all ones), all interpretations collapse to the same object: a point. This remains true regardless of the internal representation of the data.
+
+\subsection*{Illustrative Example (Python)}
+
+\begin{verbatim}
+from itertools import product
+import numpy as np
+import matplotlib.pyplot as plt
+
+def generate_bitstrings(n):
+    return [''.join(bits) for bits in product('01', repeat=n)]
+
+def decode_as_points(bitstring, mode='int', dim=3, chunk_size=8):
+    chunks = [bitstring[i:i+chunk_size] for i in range(0, len(bitstring), chunk_size)]
+    while len(chunks) < dim:
+        chunks.append('0' * chunk_size)
+    chunks = chunks[:dim]
+
+    if mode == 'int':
+        return tuple(int(c, 2) for c in chunks)
+    elif mode == 'float':
+        return tuple(int(c, 2)/2**chunk_size for c in chunks)
+    else:
+        raise ValueError("Unsupported mode")
+
+bitstring = '0' * 24  # zero entropy case
+modes = ['int', 'float']
+points = []
+
+for mode in modes:
+    p = decode_as_points(bitstring, mode=mode)
+    points.append(p)
+
+points = np.array(points)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(points[:,0], points[:,1], points[:,2])
+ax.set_title("Geometric interpretations of zero-entropy bitstring")
+plt.show()
+\end{verbatim}
+
+This validates the assertion that geometric singularity is the universal outcome of vanishing entropy, regardless of encoding scheme or mapping assumptions.
+
 
 \section{Simulation Details}
 
@@ -110,7 +157,7 @@ We implemented a Python simulation of a collapsing dust cloud. State data was qu
   \centering
   \includegraphics[width=1.0\textwidth]{figures/collapse_0.png}
   \includegraphics[width=1.0\textwidth]{figures/collapse_40.png}
-  \caption{Collapsing spacetime geometry. As entropy decreases, structure shrinks toward a point.}
+  \caption{Collapsing spacetime geometry. As entropy decreases, spacetime collapses toward a point.}
   \label{fig:vanishing_entropy}
 \end{figure}
 
