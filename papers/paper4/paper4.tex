@@ -15,6 +15,7 @@
 
 \begin{abstract}
     We present a discrete, observer-based model of the universe grounded in bitstring information theory. In this minimal setting, we define observers as sequences of finite bitstrings and investigate their persistence within possible universes composed of frames of bits. The model introduces a similarity metric for observer survival, proposes an entanglement-like phenomenon via shared memory fragments, and reinterprets the wavefunction as a compressed extrapolation over observer trajectories. This framework challenges traditional physical ontology, suggesting that reality is observer-centric and informational at its core.
+
 \end{abstract}
 
 
@@ -33,6 +34,59 @@ This fourth paper closes the loop by showing how quantum-like behavior—interfe
 We explore a radically minimalist foundation for physics based on bitstrings and observer-centric reasoning. In this model, the universe is not something that evolves over time according to dynamical rules, but rather a collection of static information patterns in which observers find themselves embedded. Thus, what we call \emph{reality} is the subset of bitstring universes that contain coherent observer trajectories.
 
 
+\section{Observational Assumptions}
+
+In order to model a minimal universe we assume four observational assumptions. These are not metaphysical claims, but empirically grounded regularities, each supported by real-world examples or established computational models. They are deliberately minimal and falsifiable. If any one of them were shown to be invalid, the conclusions of this theory would not follow.
+
+\paragraph{Assumption 1: Memory Requires Information Preservation}
+
+\emph{Any observer capable of memory must preserve information across internal states.}
+
+\vspace{0.2em}
+This reflects the basic fact that for an observer to retain and recall experiences, the observer's internal structure must persist and encode past information. This is true of human cognition, digital memory systems, and even simple biological organisms.
+
+\emph{Implication:} There must exist a substrate—physical or virtual—that allows for stateful information retention across time.
+
+---
+
+\paragraph{Assumption 2: Information Can Be Represented by Bitstrings}
+
+\emph{Any physical or cognitive state can be encoded as a finite sequence of discrete symbols (e.g., a bitstring).}
+
+\vspace{0.2em}
+This is not a commitment to digital physics, but an acknowledgment that, for the purposes of modeling and communication, all observable phenomena can be encoded discretely. DNA, brain states, and digital computers all support this view.
+
+\emph{Implication:} For modeling purposes, we can assume a discrete representation of observers and systems without loss of generality.
+
+---
+
+\paragraph{Assumption 3: Computation Is a Physical Process}
+
+\emph{All physically realizable processes can be modeled as computation.}
+
+\vspace{0.2em}
+This aligns with the Church–Turing–Deutsch thesis and is broadly supported by the success of computational models in physics and biology. This assumption is empirical: no known physical process has been shown to lie outside computational modeling.
+
+\emph{Implication:} Any observer or system can be described as a sequence of computational state transitions—an execution trace.
+
+---
+
+\paragraph{Assumption 4: Causality is Represented by Ordered States}
+
+\emph{Causal structure corresponds to the sequential ordering of informational states.}
+
+\vspace{0.2em}
+In practice, we observe events as sequences: perception follows stimulus, memory encodes before retrieval, and measurements yield outputs after inputs. We assume that causality is experienced as an ordering of state transitions, not imposed externally.
+
+\emph{Implication:} Time and causality are not primitive; they are emergent from the order in which informational states are experienced.
+
+---
+
+Together, these four assumptions provide the foundation for the theory that follows. They assert that memory, representation, computation, and causality are all observable features of physical reality. No metaphysical entities are required.
+
+The remainder of this work shows that these assumptions—empirical, falsifiable, and widely supported—lead inevitably to the conclusion that the universe is fundamentally informational. All structure, from particles to consciousness, arises from the combinatorics of information patterns and their observer-relative interpretations.
+
+
 \section{Framework and Definitions}
 
 Let $B$ denote the total number of bits used to describe a universe. We define:
@@ -44,9 +98,9 @@ Let $B$ denote the total number of bits used to describe a universe. We define:
 
 \subsection{Observer-Centric Universe Construction Principle (OCUCP)}
 
-An observer is said to exist only in those universes $U \in \mathcal{U}_B$ such that for all $i$, there exists $o_i \subseteq f_i$. That is, the observer must be embedded, frame by frame, into the universe.
 
-This approach inverts the usual ontology: rather than universes determining observers, observers determine which universes are relevant. Reality is defined \emph{relative to the observer's compatibility with the universe}.
+An observer exists in those universes $U \in \mathcal{U}_B$ where their memory patterns $o_i$ are statistically embedded within the universe frames $f_i$. The ontology is relational: observer existence is defined probabilistically by structural compatibility rather than by deterministic selection.
+
 
 \subsection{Observer Contuinity Lemma (OCL)}
 
@@ -74,7 +128,7 @@ That is, smooth, regular, and compressible universes support more observers, sim
 
 \subsection{Wavefunction as Compressed Continuation}
 
-An observer predicts future frames by extrapolating structural regularities from memory using compression-based logic:
+An observer’s internal model probabilistically extrapolates future frames by identifying structural regularities and compression patterns. This naturally leads to multiple possible continuations weighted by their compressibility, forming an informational “superposition” rather than a deterministic path.
 
 \begin{itemize}
     \item The observer contains past states $\{o_1, \ldots, o_t\}$.
@@ -93,7 +147,7 @@ This is a structural, non-local correlation—not a causal interaction. It arise
 
 \section{Simulation}
 
-We present a simulation framework that implements the observer-centric model of universes. The simulation generates two-dimensional discrete spacetimes as sequences of bitstrings, allowing observers to navigate these universes based on their memory patterns.
+We present a simulation framework implementing the observer-centric model of universes. The simulation generates two-dimensional discrete spacetimes as sequences of bitstrings, representing the full ensemble of possible universe states. Observers do not actively select their continuations; instead, they find themselves statistically realized in those universe configurations that best sustain their continuations, e.g. match their memory patterns. Among the many consistent continuations, the observer's experience corresponds to the most probable or typical configurations as determined by structural similarity.
 
 The simulation software implements the observer-centric model as follows:
 
@@ -170,7 +224,9 @@ This framework lets us interpret similarity as interference amplitude: when it's
 
 \section{Discussion and Implications}
 
-This model abandons conventional notions of causality and dynamics in favor of a static informational ontology. Universes do not evolve; rather, they are favored by observers based on structural compatibility. The past is defined by memory fragments; the future is an extrapolation constrained by compression logic.
+This model abandons conventional notions of causality and dynamics in favor of a static informational ontology.
+
+Universes are static informational structures, with observer experience arising from statistical compatibility between memory fragments and universe configurations. The “future” corresponds to a distribution over possible continuations, weighted by compression-based likelihood, rather than a uniquely evolving timeline.
 
 There is no fundamental substrate—only bitstrings and the observer's search for consistent continuations. Gravity, time, and quantum effects emerge as statistical preferences under this framework.
 
