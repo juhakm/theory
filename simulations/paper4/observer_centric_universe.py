@@ -1,30 +1,3 @@
-"""
-Module: observer_centric_universe.py
-
-This simulation implements an observer-centric, information-theoretic model of universe evolution.
-It aligns with the ideas presented in the paper:
-
-    "Observer-Centric Bitstring Universes: A Minimal Informational Model of Reality"
-
-The program generates random sequences of bitstrings interpreted as possible universe states,
-ranks them by similarity with an observer-defined pattern, and extracts the most coherent
-trajectories of emergent particle patterns. It supports key claims from the paper:
-
-0. Wavefunction is the most effective peridic pattern for compressing information.
-1. Entropy increase over time corresponds to unfolding structure.
-2. Observer-defined memory patterns influence the selection of consistent universe paths.
-3. Emergent particle trajectories can be detected as coherent motifs in discrete time-space evolution.
-4. Heatmaps reveal structured versus random evolution, suggesting alignment with entropy-driven spacetime expansion.
-
-Visualizations include:
-- Particle trajectory plots
-- Universe state heatmaps
-- Future particle prediction maps
-
-This simulation serves as evidence for the Entropy-Singularity Lemma and supports the notion that physical
-laws emerge from abstract informational configurations.
-"""
-
 import matplotlib.pyplot as plt
 from itertools import product
 from typing import List, Tuple, Optional
@@ -104,7 +77,7 @@ def simulate_universe_evolution_sampled(
     n_bits: int,
     time_steps: int,
     particle_pattern: List[int],
-    observer_pattern: List[int],
+    observer_patterns: List[List[int]],
     sample_size: int = 1000,
 ) -> Tuple[List[Tuple[Tuple[int, ...], ...]], List[List[Optional[int]]]]:
     """Simulate evolution of sampled universes, return top scoring paths and trajectories."""
@@ -119,7 +92,10 @@ def simulate_universe_evolution_sampled(
         score = 0.0
         for i in range(len(path) - 1):
             score += wave_similarity(path[i], path[i + 1])
-        score += sum(wave_similarity(observer_pattern, list(state)) for state in path)
+        # Use corresponding observer pattern per time or last one if out of range
+        for i, state in enumerate(path):
+            obs_pattern = observer_patterns[min(i, len(observer_patterns) - 1)]
+            score += wave_similarity(obs_pattern, list(state))
         return score
 
     scored_paths = []
@@ -138,6 +114,53 @@ def simulate_universe_evolution_sampled(
         trajectories.append(traj)
 
     return top_paths, trajectories
+
+
+# --- Probabilistic Future Generation ---
+
+
+def random_bitstring(length: int) -> List[int]:
+    return [random.randint(0, 1) for _ in range(length)]
+
+
+def similarity_metric(bits1: List[int], bits2: List[int]) -> float:
+    """Similarity between two bitstrings using wave similarity."""
+    return wave_similarity(bits1, bits2)
+
+
+def generate_weighted_future(
+    last_frame: List[int],
+    n_future: int,
+    space_size: int,
+    n_candidates: int = 100,
+) -> List[List[int]]:
+    """
+    Generate a probabilistic future sequence of frames starting from last_frame.
+    Each next frame is sampled from candidates weighted by similarity to current frame.
+    """
+    future_frames = []
+    current_frame = last_frame
+
+    for _ in range(n_future):
+        candidates = []
+        for _ in range(n_candidates):
+            candidate = random_bitstring(space_size)
+            sim_score = similarity_metric(candidate, current_frame)
+            candidates.append((sim_score, candidate))
+
+        scores = np.array([max(0, c[0]) for c in candidates])  # clip negatives
+        if scores.sum() == 0:
+            probabilities = np.ones(len(candidates)) / len(candidates)
+        else:
+            probabilities = scores / scores.sum()
+
+        chosen_idx = np.random.choice(len(candidates), p=probabilities)
+        chosen_frame = candidates[chosen_idx][1]
+
+        future_frames.append(chosen_frame)
+        current_frame = chosen_frame
+
+    return future_frames
 
 
 # --- Visualization ---
@@ -186,29 +209,20 @@ def plot_future_particle_heatmap(
     n_future: int = 16,
     space_size: int = 64,
     n_samples: int = 5000,
+    n_candidates: int = 100,
 ):
     heatmap = np.zeros((n_future, space_size))
 
-    def biased_future(last_frame: List[int], p: float = 0.9) -> List[int]:
-        return [bit if random.random() < p else 1 - bit for bit in last_frame]
-
-    def random_future():
-        frames = []
-        frame = last_frame.copy()
-        for _ in range(n_future):
-            frame = biased_future(frame, p=0.9)
-            frames.append(frame.copy())
-        return frames
-
     for _ in range(n_samples):
-        future_frames = random_future()
+        future_frames = generate_weighted_future(
+            last_frame, n_future, space_size, n_candidates
+        )
         full_frames = [last_frame] + future_frames
         traj = detect_particle_positions(full_frames, particle_pattern)
         for t, pos in enumerate(traj[1:], start=0):  # exclude t=0
             if pos is not None:
                 heatmap[t, pos] += 1
 
-    # Normalize heatmap for plotting
     heatmap /= heatmap.max() + 1e-10
 
     plt.figure(figsize=(10, 5))
@@ -245,17 +259,59 @@ def plot_average_heatmap(paths: List[Tuple[Tuple[int, ...], ...]]):
     plt.show()
 
 
+def plot_future_particle_heatmap(
+    last_frame: List[int],
+    particle_pattern: List[int],
+    n_future: int = 16,
+    space_size: int = 64,
+    n_samples: int = 5000,
+    n_candidates: int = 100,
+):
+    heatmap = np.zeros((n_future, space_size))
+
+    for _ in range(n_samples):
+        future_frames = generate_weighted_future(
+            last_frame, n_future, space_size, n_candidates
+        )
+        full_frames = [last_frame] + future_frames
+        traj = detect_particle_positions(full_frames, particle_pattern)
+        for t, pos in enumerate(traj[1:], start=0):  # exclude t=0
+            if pos is not None:
+                heatmap[t, pos] += 1
+
+    heatmap /= heatmap.max() + 1e-10
+
+    plt.figure(figsize=(10, 5))
+    plt.imshow(heatmap, cmap="viridis", interpolation="nearest", aspect="auto")
+    plt.colorbar(label="Normalized Particle Likelihood")
+    plt.xlabel("Space Index")
+    plt.ylabel("Future Time Step")
+    plt.title("Future Particle Appearance Heatmap")
+    plt.savefig("future_particle_heatmap.png", format="png", dpi=300)
+    plt.show()
+
+
 # --- Main ---
 if __name__ == "__main__":
     n_bits = 64
     time_steps = 64
     particle_pattern = [0, 1, 0, 1, 1, 0, 1, 0]
-    observer_pattern = [0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0]
+    # Observer patterns evolving over time (example)
+    observer_patterns = [
+        [0, 1],
+        [0, 1, 0],
+        [1, 0, 1, 0],
+        [1, 1, 0, 0, 1],
+        [0, 0, 1, 1, 0, 0],
+        [0, 0, 1, 1, 0, 0, 1],
+        [1, 0, 0, 1, 0, 1, 1, 0],
+        [1, 1, 0, 1, 0, 1, 0, 1, 0],
+    ]
 
     print(f"Simulating universes with {n_bits} bits over {time_steps} time steps...")
 
     top_paths, trajectories = simulate_universe_evolution_sampled(
-        n_bits, time_steps, particle_pattern, observer_pattern, sample_size=5000
+        n_bits, time_steps, particle_pattern, observer_patterns, sample_size=5000
     )
 
     for i, path in enumerate(top_paths):
@@ -265,12 +321,10 @@ if __name__ == "__main__":
             print(f"  Time {t}: {''.join(map(str, state))}")
         plot_universe_2d(frames, f"Universe Evolution for Path {i+1}")
 
-    # Plot averaged heatmap over top-k paths
     plot_average_heatmap(top_paths)
 
     plot_particle_trajectories(trajectories, top_paths)
 
-    # Visualize future heatmap starting from top observer-compatible path
     best_path = top_paths[0]
     last_frame = list(best_path[-1])
     plot_future_particle_heatmap(
@@ -279,6 +333,7 @@ if __name__ == "__main__":
         n_future=16,
         space_size=n_bits,
         n_samples=5000,
+        n_candidates=100,
     )
 
     print("Simulation complete. Visualizations saved as images.")
