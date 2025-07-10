@@ -3,7 +3,6 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{cite}
 \usepackage[backend=biber]{biblatex}
 \addbibresource{../references.bib}
 \geometry{margin=1in}
@@ -14,15 +13,14 @@
 \begin{document}
 \maketitle
 
+
 \begin{abstract}
   Building on our earlier proposal that the universe is fundamentally informational in nature, we present a computational model of black hole singularities based on the entropy of execution traces. By simulating black hole evolution as a computational process, we represent system states as bitstrings and define a mapping from information to spacetime geometry. We show that vanishing Shannon entropy corresponds to geometric collapse into a singular point in any embedding space. A Python simulation illustrates this entropy–geometry correspondence in dynamic systems. This supports the view that geometric singularities may emerge from informational degeneracy.
 \end{abstract}
 
 \section{Introduction}
 
-This paper builds on a previously proposed framework in which physical reality, including time and conscious experience, emerges from information encoded in formal axiomatic systems [1]. In that model, systems like human beings and their digital simulations are viewed as different realizations of the same informational content. Extending this principle, we now explore whether a black hole—a classically continuous geometric object—can also be represented as an informational system. Specifically, we ask: if the universe is fundamentally discrete and informational, what does a black hole singularity look like under this ontology?
-
-The connection between entropy and geometry is well established in black hole thermodynamics, notably through the Bekenstein--Hawking entropy formula \cite{Bekenstein1973,Hawking1975}, which relates the entropy of a black hole to the surface area of its event horizon. We take this further by considering \emph{entropy collapse}---a transition to a state of minimal information---and its geometric consequence.
+This paper builds on a previously proposed framework in which physical reality, including time and conscious experience, emerges from information encoded in formal axiomatic systems \cite{meskanen2019}. In that model, systems like human beings and their digital simulations are viewed as different realizations of the same informational content. Extending this principle, we now explore whether a black hole—a classically continuous geometric object—can also be represented as an informational system. Specifically, we ask: if the universe is fundamentally discrete and informational, what does a black hole singularity look like under this ontology?
 
 
 This leads to a central claim:
