@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath, amssymb, hyperref}
 \usepackage{amsthm}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{../references.bib}
 \newtheorem{lemma}{Lemma}
 \usepackage{geometry}
 \geometry{margin=1in}
@@ -64,7 +66,7 @@ Suppose we optimize to the extreme: all computation is replaced by a static data
 
 Yes—because to claim otherwise would require positing a physical threshold (e.g., CPU cycles per second) for consciousness, which contradicts the axiomatic model.
 
-\textbf{Conclusion:} Static data can describe universes with conscious observers. Because static data has no notion of time, time must therefore emerge from the structure of the data, not its runtime.
+\textbf{Conclusion:} Static data can describe universes with conscious observers. Static data has no notion of time. Because execution ordering (not clock time) defines state transitions, temporal structure must arise from internal data relationships, not from external runtime.
 
 \subsection{Multithreading and White Noise}
 
@@ -100,24 +102,44 @@ Every measurement that simulated observers make within their virtual universes m
 
 Yet we, the real observers, know that these virtual universes are simulated—created via hardware we understand and control.
 
-Let us define a recursive universe model:
+Let:
+\begin{itemize}
+  \item \( \mathcal{S}_i \): the informational state of universe at level \( i \)
+  \item \( \mathcal{T}_i \): the execution trace of a simulation running within \( \mathcal{S}_i \)
+  \item \( \Phi \): a mapping from an execution trace to a geometric structure (e.g., a simulated universe)
+\end{itemize}
 
+We define the simulated universe as:
 \[
-  U_{i+1} = U_i
+  \mathcal{S}_{i+1} = \Phi(\mathcal{T}_i)
 \]
 
-where \( U_i \) is a physical universe and \( U_{i+1} \) is a fully simulated universe within it.
+That is, \( \mathcal{S}_{i+1} \) is the geometric interpretation of the execution trace \( \mathcal{T}_i \) embedded within universe \( \mathcal{S}_i \).
+
+Importantly, this recursion is not infinite. Every universe \( \mathcal{S}_i \) has finite informational resources. With each successive simulation, entropy loss, quantization, or resolution limits degrade the fidelity of \( \mathcal{T}_i \), so that eventually:
+
+\[
+  \mathcal{S}_{i+n} = \bot \quad \text{for some } n \ll \infty
+\]
+
+Here, \( \bot \) denotes an informational collapse—an inability to continue the simulation meaningfully due to insufficient entropy or representational capacity.
+
+This formulation supports a finite, information-constrained recursion of simulated universes, each arising as a geometric projection of a computation trace.
+
+If any universe  is virtual—i.e., instantiated from an execution trace within —then by informational symmetry:
 
 If:
 \[
-  U_{i+1} = \text{Virtual}
+  S_{i+1} = \text{Virtual} => S_{i} = \text{Virtual}
 \]
 Then, by recursion:
 \[
-  U_i = U_{i+1} = \text{Virtual}
+  S_i = S_{i+1} = \text{Virtual}
 \]
 
-Thus, we are living in a virtual universe ourselves.
+Thus, there is no ontologically privileged level. If even one layer is virtual, they all must be. Therefore, we conclude our universe is virtual.
+
+
 
 \section{Conclusion}
 
@@ -128,5 +150,19 @@ From this, it follows that consciousness is not tethered to biology or substrate
 These findings imply that physical reality itself is informational.
 
 Though full-scale DNA-based simulations are currently infeasible, the model is falsifiable in principle—particularly through the behavioral and physiological correlates of subjective phenomena in artificial systems. This foundational paper lays the groundwork. Future work will explore how key physical phenomena—such as inertia, interference, and locality—emerge from pure information.
+
+\section*{Future Work}
+
+This paper establishes a foundational view of reality as fundamentally informational and observer-relative. In future work, we aim to extend this framework beyond the black hole singularity, applying the entropy-geometry correspondence to a broader range of physical phenomena.
+
+Specifically, we will apply this informational ontology framework to:
+
+\begin{itemize}
+  \item black hole singularity.
+  \item cosmological inflation or the big bang.
+  \item Explore whether classical fields, particle trajectories, and relativistic invariants can emerge as geometric interpretations of evolving low-entropy execution traces.
+\end{itemize}
+
+This agenda reflects a unified vision: that all of physics may be recast as emergent geometry arising from evolving informational states.
 
 \end{document}

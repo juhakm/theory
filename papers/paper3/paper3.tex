@@ -4,6 +4,8 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{geometry}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{../references.bib}
 \geometry{margin=1in}
 
 \title{Expanding Entropy and the Birth of Spacetime}
@@ -13,25 +15,18 @@
 \begin{document}
 \maketitle
 
-
 \begin{abstract}
-   We explore the hypothesis that the growth of entropy in a computable execution trace corresponds to the expansion of spacetime,
-   offering a natural explanation for the low-entropy initial state of the universe and its inflationary growth. Using simple simulations
-   based on bit string evolution and particle definitions from minimal structures, we demonstrate that entropy
-   increase drives an emergent geometric expansion. Furthermore, we uncover that the statistical distribution of emergent
-   structure probability follows a lognormal pattern.
+   We explore the hypothesis that the growth of entropy in a computable execution trace corresponds to the expansion of spacetime, offering a natural explanation for the low-entropy initial state of the universe and its inflationary growth. Using bitstring evolution and geometric decoding rules, we demonstrate how entropy increase leads to emergent structure — from elementary particles to molecules — with their statistical frequency following a lognormal distribution.
+
+   Unlike traditional models in General Relativity and Quantum Mechanics, we propose that the universe began in a zero-entropy state — incapable of encoding structure, and therefore devoid of curvature or gravity. As entropy increases, complexity and geometry emerge. This framework implies that the curvature at the singularity is not infinite, but identically zero — a conclusion with profound implications for the informational foundations of physics.
 \end{abstract}
+
 
 \section{Introduction}
 
-Why did the universe begin in such a finely tuned state? And why does entropy continue to increase as the universe expands?
-These questions have often been treated as separate, but we argue that they are fundamentally linked.
-In our previous work, we proposed an information-theoretic framework to describe the collapse of spacetime geometry through
-the lens of entropy reduction, formalized in the **Entropy-Singularity Lemma**: *vanishing entropy implies geometric
-singularity* \cite{Paper1}.
+This work is the third in a sequence of studies exploring the hypothesis that physical reality is fundamentally informational. In \textbf{Paper 1}, we argued that conscious observers can be described as axiomatic systems, and that time is an emergent property of the observer’s internal state transitions. \textbf{Paper 2} then applied this framework to spacetime collapse, proposing that black hole singularities correspond to points of zero entropy in an informational execution trace.
 
-In this paper, we reverse this process, postulating that the **increase in entropy** corresponds to the expansion of spacetime,
-effectively mapping the increase in informational complexity to cosmological expansion.
+In this paper, we reverse the arrow of time: rather than studying gravitational collapse, we investigate how the \textit{increase} of entropy within a bitstring-based computational model gives rise to emergent geometric complexity — a model of spacetime birth.
 
 
 \section{Entropy as a Driver of Expansion}
@@ -43,7 +38,7 @@ incrementally increases entropy.
 Each $S_t$ is interpreted geometrically through a decoding scheme $D: \{0,1\}^L \to \mathbb{R}^d$. In this study,
 we define the hierarchy of elementary structures as follows:
 
-1. **Spacetime fabric:** Directly defined by 3D points encoded from the bistrings through the decoding scheme.
+1. **Spacetime fabric:** Directly defined by 3D points encoded from the bitstrings through the decoding scheme.
 
 2. **Elementary Particles:** These are defined as pairs of 3D points, i.e., pairs of
 coordinates $((x_1, y_1, z_1), (x_2, y_2, z_2))$, where the spatial separation between the
@@ -82,7 +77,10 @@ We find:
 
 \section{Statistical Properties: Lognormal Emergence}
 
-Plotting the number of valid geometric interpretations (particles, atoms, molecules) against entropy yields a distribution resembling a lognormal curve.  The results also show that at lower entropy, only elementary particles exist, while at higher entropy, atoms and molecules emerge. This aligns with observed cosmic evolution: inflation (early burst), structure formation, and degeneration during late-time hen the entropy reaches its maximum. The simulation also demonstrate natural progression from simple to complex forms as entropy increases.
+Plotting the number of valid geometric interpretations (particles, atoms, molecules) against entropy yields a distribution resembling a lognormal curve.  The results also show that at lower entropy, only elementary particles exist, while at higher entropy, atoms and molecules emerge. This aligns with observed cosmic evolution: inflation (early burst), structure formation, and degeneration during late-time when the entropy reaches its maximum. The simulation also demonstrate natural progression from simple to complex forms as entropy increases.
+
+This lognormal emergence mirrors statistical patterns observed in astrophysical data — such as the distribution of galaxy masses, luminosities, and star formation rates — suggesting that the informational substrate may underlie both micro and macro structure formation.
+
 
 \begin{figure}[h!]
    \centering
@@ -96,7 +94,7 @@ The simulation program is hosted at \url{http://github.com/juhakm/emergence_of_s
 
 \section*{Implications for Spacetime Geometry}
 
-Despite its minimal assumptions and lack of conventional predictive machinery, our model reveals consistent structural patterns in the evolution of bitstring-based universes. One of the most striking observations is the emergence of a lognormal distribution in the frequency of microstructures as entropy increases from its minimum.
+Although our simulation makes minimal physical assumptions and does not include traditional dynamics, it nevertheless reveals a consistent emergence of structured matter from random bitstring evolution — suggesting that informational entropy alone may be sufficient to drive the geometry of spacetime.
 
 This statistical regularity has direct geometric implications: it suggests that the probability of matter — interpreted here as persistent, compressible patterns — is correlated with entropy. Near the entropy minimum, where the informational configuration consists of long, uniform bitstrings (e.g., all 0s or 1s), the probability of finding any distinguishable structure approaches zero. Without structure, there is no particle content — and therefore, no gravity.
 
@@ -104,14 +102,14 @@ This leads to a provocative conclusion: the curvature of spacetime at the singul
 
 This interpretation stands in stark contrast to both General Relativity, which predicts infinite curvature at the singularity, and Quantum Mechanics, which typically excludes the possibility of a fully defined, zero-entropy state. Yet, in our simulation, the universe begins in precisely such a state, and coherent geometric structures emerge only as entropy increases.
 
+The informational view suggests a radical unification: gravity, geometry, time, and quantum effects may all arise from the same fundamental source — entropy evolution in computation. In this light, spacetime is not the stage upon which information acts, but the shadow it casts.
+
 
 \section{Future Work}
 
-This paper establishes a computational framework in which entropy increase corresponds to the emergence of spacetime geometry and structure, offering a clean statistical alternative to the singular initial conditions postulated by General Relativity and Quantum Mechanics.
-
 We will explore the implications of the observed breakdown of both GR (due to singularities) and QM (due to the assumption of nonzero entropy at origin), and construct a unified information-theoretic framework to describe phenomena attributed to spacetime curvature and quantum entanglement.
 
-Ultimately, we aim to replace geometric and probabilistic descriptions of the universe with a single, consistent, fully self-contained model that expect no substrace beyond information itself.
+Ultimately, we aim to replace geometric and probabilistic descriptions of the universe with a single, consistent, fully self-contained model that expects no substrace beyond information itself.
 
 
 \end{document}
