@@ -8,7 +8,7 @@ height = 64  # bits per time
 num_samples = 1000
 num_freqs = 1024
 
-# Observer pattern (circular shape, now float-valued)
+# Observer pattern (circular shape, one out of 2**(width*height) )
 circle = [
     [0, 0, 0, 0],
     [0, 1, 0, 0],
