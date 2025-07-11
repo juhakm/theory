@@ -1,28 +1,12 @@
-"""
-observer_centric_universe.py
-
-This module simulates 2D spacetimes (space x time grids) using random Fourier-based wavefields,
-then binarizes and scans them for the presence of a predefined observer pattern.
-
-The simulation searches through multiple randomly generated wavefields to find the one
-that maximally matches the observer pattern, suggesting a universe where the observer naturally emerges.
-
-Dependencies:
-- numpy
-- matplotlib
-- scipy.fftpack
-- scipy.signal
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fftpack import ifft2
 
 # Configuration
-width = 64
-height = 64
+width = 64  # bits per space
+height = 64  # bits per time
 num_samples = 1000
-num_freqs = 10
+num_freqs = 1024
 
 # Observer pattern (circular shape, now float-valued)
 circle = [
@@ -50,8 +34,6 @@ def generate_circular_pattern(size):
 
 
 observer_pattern = generate_circular_pattern(13)
-
-
 # observer_pattern = np.array(circle, dtype=float)
 pattern_height, pattern_width = observer_pattern.shape
 observer_norm = np.linalg.norm(observer_pattern.flatten())

@@ -6,7 +6,7 @@
 \addbibresource{../references.bib}
 \newtheorem{lemma}{Lemma}
 \geometry{margin=1in}
-\title{\LARGE A Theory of Information and the Universe}
+\title{\LARGE The Abstract Universe Project}
 \author{Juha Meskanen}
 \date{2019 -- \today}
 
@@ -26,17 +26,37 @@ In this work, we reject the presumption that spacetime or particles are ontologi
 
 We begin with four assumptions that are not metaphysical postulates, but observationally grounded regularities evident in both physics and computation. These assumptions are minimal, falsifiable, and intentionally free of ontological commitments. From them, we derive a striking conclusion: the universe must be fundamentally informational, and all informational states that satisfy these assumptions already exist.
 
-This line of reasoning allows us to reinterpret major physical features as emergent informational phenomena. It provides unified explanations for long-standing questions such as:
-\begin{itemize}
-      \item Why time flows and why it has a direction.
-      \item What governs the structure of black hole singularities.
-      \item How spacetime geometry can emerge from discrete informational patterns.
-      \item Whether a minimal model of the universe can generate the laws of physics.
-\end{itemize}
+This line of reasoning lead us to reinterpret all physical features as emergent informational phenomena.  The framework developed assumes no primitive physical substrate—no predefined spacetime, particles, or fields. Everything we observe, from matter to consciousness, is modeled as an emergent structure within a fundamentally informational universe.
 
-Each of these topics is addressed using formal reasoning and supported by mathematical models and Python simulations.
 
-The framework developed here assumes no primitive physical substrate—no predefined spacetime, particles, or fields. Everything we observe, from matter to consciousness, is modeled as an emergent structure within a fundamentally informational universe.
+
+\section*{The Observer Prevalence Principle}
+
+Let $n$ be a fixed number of bits. Let $\mathcal{U}_n = \{0,1\}^n$ denote the set of all $2^n$ binary strings, interpreted as candidate universes. Let $\mathcal{O}_n = \{0,1\}^n$ denote the same set, interpreted as candidate observers.
+
+Define a \textbf{compatibility function}
+\[
+      \mathrm{Compat}: \mathcal{O}_n \times \mathcal{U}_n \rightarrow \{0,1\}
+\]
+such that $\mathrm{Compat}(o, u) = 1$ if observer $o$ can exist within universe $u$ under a chosen observer model (e.g., memory encoding, trajectory embedding, structural motif match), and 0 otherwise.
+
+\begin{definition}[Observer Prevalence Principle]
+      The \emph{subjective probability} that a given observer $o \in \mathcal{O}_n$ experiences a particular universe $u \in \mathcal{U}_n$ is proportional to the number of universes compatible with $o$:
+      \[
+            \Pr(u \mid o) \propto \mathrm{Compat}(o, u).
+      \]
+      Equivalently, the most probable universe an observer experiences is the one maximizing the number of observer-compatible instances:
+      \[
+            u^* = \arg\max_{u \in \mathcal{U}_n} \sum_{o \in \mathcal{O}_n} \mathrm{Compat}(o, u).
+      \]
+\end{definition}
+
+This principle implies that the observed universe is biased toward configurations that support the maximal number of observers isomorphic to the subject, leading to emergent regularities (e.g., smooth physical laws, coherent time evolution) that favor observer persistence.
+
+\begin{remark}
+      The special case where an observer $o$ is identical to a universe $u$ (i.e., $o = u$ and $\mathrm{Compat}(o, u) = 1$ trivially) defines a fixed point of maximal internal consistency. This limiting case represents an informational singularity—an observer-universe with no internal entropy or external reference.
+\end{remark}
+
 
 
 \section*{A Technical Introduction to an Observer-Centric, Information-Theoretic Theory of Everything}
@@ -70,7 +90,7 @@ A central insight of the theory is that the \textbf{wavefunction is not a physic
 
 \subsection*{3. Time, Entropy, and the Observer's Horizon}
 
-Time is modeled as increasing entropy within an observer-compatible bitstring path. Past states are constrained by observer memory; future states are undetermined but \textbf{filtered} through the compression mechanism (the wavefunction), yielding a \textbf{probabilistic projection} rather than deterministic evolution.
+Time is modeled as an ordered super-set of bitstrings. Past states are constrained by observer memory; future states are undetermined but \textbf{filtered} through the compression mechanism (the wavefunction), yielding a \textbf{probabilistic projection} rather than deterministic evolution.
 
 \begin{itemize}
       \item The \textbf{past} is the region of high similarity with observer memory.
@@ -99,20 +119,15 @@ A concrete implementation of this theory samples all possible spacetime bitstrin
       \item Increasing entropy over time (arrow of time)
       \item Emergent particle-like structures
       \item Smooth geodesic-like motion
-      \item Quantum-like predictive uncertainty
+      \item Quantum-like predictive uncertainty and interference
 \end{itemize}
 
-These results support the central \textbf{Entropy-Singularity Lemma}:
-\begin{quote}
-      \textit{As entropy vanishes, geometry collapses to a singular structure.}
-\end{quote}
 
 \subsection*{Conclusion}
 
 This theory redefines ontology: \textbf{reality is not made of matter but of compressible information}, with observers acting as statistical filters. The universe is not a singular entity but a probabilistic ensemble weighted by informational efficiency. And physics — all of it — is just the echo of a deeper algorithm: \textbf{find the wave that best describes you.}
 
+
+
 \end{document}
 
-
-
-\end{document}
