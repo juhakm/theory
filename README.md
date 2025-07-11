@@ -1,13 +1,16 @@
-# Theory
+# The Abstract Universe Project
 
-Welcome to **Theory**, a research and simulation project exploring a novel information-theoretic model of reality. This repository hosts the source code, simulations, and papers developing the *Theory* — a framework proposing that the universe emerges from pure abstract information with no predefined subtrace.
+Welcome to **The Abstract Universe Project**, a research and simulation project exploring a novel information-theoretic model of reality. 
+This repository hosts the source code, simulations, and papers developing the *The Abstract Universe Project* — a framework proposing that the 
+universe emerges from pure abstract information with no predefined subtrace.
 
 ---
 
 ## Project Overview
 
-The core idea behind *Theory* is that physical reality, including spacetime and consciousness, can be understood as emergent phenomena arising from abstract, discrete information. 
-The project combines formal mathematical theory, simulation experiments, and computational visualizations to investigate these concepts.
+The core idea behind *The Abstract Universe Project* is that physical reality, including spacetime and consciousness, can be understood as 
+emergent phenomena arising from abstract, discrete information. The project combines formal mathematical theory, simulation experiments, 
+and computational visualizations to investigate these concepts.
 
 Key components include:
 
