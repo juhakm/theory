@@ -2,9 +2,12 @@
 \usepackage{amsmath, amssymb, hyperref}
 \usepackage{amsthm}
 \usepackage{geometry}
+\usepackage{graphicx}
 \usepackage[backend=biber]{biblatex}
 \addbibresource{../references.bib}
 \newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
 \geometry{margin=1in}
 \title{\LARGE The Abstract Universe Project}
 \author{Juha Meskanen}
@@ -16,18 +19,9 @@
 
 \section{Introduction}
 
-Physics has long grappled with the apparent disjunction between quantum mechanics and general relativity. While the former describes the probabilistic behavior of subatomic particles, the latter governs the smooth, deterministic curvature of spacetime. Unifying these frameworks has proven notoriously difficult, particularly due to the fundamentally different assumptions about locality, determinism, and measurement.
+In this framework, we reject the presumption that spacetime or particles are ontologically fundamental \cite{wheeler1990it} \citation{zuse1970calculating}. We show that the universe is made of abstract information, provided only four observable assumptions hold. The assumptions are observationally grounded regularities evident in both physics and computation. These assumptions are minimal, falsifiable, and intentionally free of ontological commitments. From them, we derive a conclusion: the universe must be fundamentally informational, and all informational states that satisfy these assumptions already exist.
 
-As intelligent observers embedded in the universe, we attempt to model the very system we are part of. This raises foundational limits reminiscent of Gödel's incompleteness theorem: just as no sufficiently powerful formal system can prove all truths about itself, perhaps no internal observer can derive a complete physical theory of the universe from within \cite{dyson2004godel}. These self-referential limits motivate the search for a new foundation grounded not in geometry or fields, but in information.
-
-In this work, we reject the presumption that spacetime or particles are ontologically fundamental \cite{wheeler1990it} \citation{zuse1970calculating}. We show that the universe is made of abstract information, provided only four observable assumptions hold. Spacetime and particles must then be emergent properties arising from information \cite{zuse1970calculating} \cite{tegmark2008mathematical}. Our goal is to develop a framework in which everything we perceive—including geometry, matter, time, and even consciousness—can be derived from information.
-
-\section{Four Observational Assumptions}
-
-We begin with four assumptions that are not metaphysical postulates, but observationally grounded regularities evident in both physics and computation. These assumptions are minimal, falsifiable, and intentionally free of ontological commitments. From them, we derive a striking conclusion: the universe must be fundamentally informational, and all informational states that satisfy these assumptions already exist.
-
-This line of reasoning lead us to reinterpret all physical features as emergent informational phenomena.  The framework developed assumes no primitive physical substrate—no predefined spacetime, particles, or fields. Everything we observe, from matter to consciousness, is modeled as an emergent structure within a fundamentally informational universe.
-
+The framework developed assumes no primitive physical substrate—no predefined spacetime, particles, or fields. Everything we observe, from matter to consciousness, is modeled as an emergent structure within a fundamentally informational universe.
 
 
 \section*{The Observer Prevalence Principle}
@@ -113,7 +107,7 @@ All such phenomena arise not from axioms of physics, but from the mathematics of
 
 \subsection*{5. Simulation and Empirical Grounding}
 
-A concrete implementation of this theory samples all possible spacetime bitstring paths of a given size and ranks them by wave-based compression with respect to an observer pattern. High-scoring paths exhibit:
+A concrete implementation of this theory samples all possible spacetime bitstring paths of a given size and ranks them by wave-based compression with respect to an observer pattern. Visual plots (Section 6) confirm that high-scoring paths exhibit:
 
 \begin{itemize}
       \item Increasing entropy over time (arrow of time)
@@ -122,11 +116,45 @@ A concrete implementation of this theory samples all possible spacetime bitstrin
       \item Quantum-like predictive uncertainty and interference
 \end{itemize}
 
+\section*{6. Quantum Mechanics as Emergent Compression Behavior}
+
+To concretely demonstrate the emergence of quantum behavior, we simulate a simple setup: a fixed observer memory pattern embedded within a set of evolving bitstring universes of length $n=24$ over $T=12$ time steps.
+
+\subsection*{Observer Encoding}
+
+We define an observer pattern $O$ as a fixed 8-bit substring representing a memory trace (e.g., \texttt{11001010}). The simulation searches for universe histories $U$ in which this observer pattern recurs across frames with minimal change, favoring paths with:
+
+\begin{itemize}
+      \item High internal consistency (low entropy deviation)
+      \item Compressibility under wave-like (Fourier) filters
+\end{itemize}
+
+\subsection*{Emergent Wave Patterns}
+
+Figure~\ref{fig:observer-trace} shows a heatmap of bitstring space over time, where compatible paths exhibit constructive interference — producing sinusoidal probability densities resembling quantum mechanical wavefunctions.
+
+\begin{figure}[h!]
+      \includegraphics[width=1.0\textwidth]{figures/observer_wave_evolution.png}
+      \caption{Heatmap of observer-compatible universe paths over 12 steps. High-similarity paths constructively interfere, producing wave-like amplitude envelopes.}
+      \label{fig:observer-trace}
+\end{figure}
+
+\subsection*{Interference and Probability Amplitudes}
+
+Due to bitstring superposition and compression bias, some paths amplify while others cancel — not unlike Feynman path integrals. This leads to:
+
+\begin{itemize}
+      \item Apparent interference patterns
+      \item Probabilistic future branches weighted by compressibility
+\end{itemize}
+
+These results replicate familiar quantum behaviors from an entirely classical bit-based foundation.
+
+
 
 \subsection*{Conclusion}
 
 This theory redefines ontology: \textbf{reality is not made of matter but of compressible information}, with observers acting as statistical filters. The universe is not a singular entity but a probabilistic ensemble weighted by informational efficiency. And physics — all of it — is just the echo of a deeper algorithm: \textbf{find the wave that best describes you.}
-
 
 
 \end{document}
