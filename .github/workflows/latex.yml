@@ -78,12 +78,12 @@ jobs:
           echo "realsoft.fi ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJblFT50zmX8ME8kVqM1ElGu4SHUSkFlqFMD7tycDXqb" >> ~/.ssh/known_hosts
 
       - name: Upload PDFs to SFTP
+        env:
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASS: ${{ secrets.SFTP_PASS }}
         run: |
           lftp -u "$SFTP_USER","$SFTP_PASS" sftp://realsoft.fi <<EOF
           set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=yes"
           mirror -R ./all-pdfs papers
           bye
 EOF
-        env:
-          SFTP_USER: ${{ secrets.SFTP_USER }}
-          SFTP_PASS: ${{ secrets.SFTP_PASS }}
