@@ -81,7 +81,7 @@ jobs:
         run: |
           lftp -u "$SFTP_USER","$SFTP_PASS" sftp://realsoft.fi <<EOF
           set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=yes"
-          mirror -R ./all-pdfs /your/target/folder
+          mirror -R ./all-pdfs papers
           bye
 EOF
         env:
