@@ -59,7 +59,7 @@ jobs:
   upload-to-sftp:
     name: Upload PDFs to Personal Site
     runs-on: ubuntu-latest
-    needs: build  # wait until all matrix builds are done
+    needs: build  # Wait until all matrix builds complete
 
     steps:
       - uses: actions/checkout@v4
@@ -72,14 +72,18 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      - name: Add SFTP host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "realsoft.fi ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJblFT50zmX8ME8kVqM1ElGu4SHUSkFlqFMD7tycDXqb" >> ~/.ssh/known_hosts
+
       - name: Upload PDFs to SFTP
         run: |
-          sudo apt-get update && sudo apt-get install -y lftp
           lftp -u "$SFTP_USER","$SFTP_PASS" sftp://realsoft.fi <<EOF
           set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=yes"
-          mirror -R ./pdf /target/folder/on/server
+          mirror -R ./all-pdfs /your/target/folder
           bye
-      EOF
+EOF
         env:
           SFTP_USER: ${{ secrets.SFTP_USER }}
           SFTP_PASS: ${{ secrets.SFTP_PASS }}
