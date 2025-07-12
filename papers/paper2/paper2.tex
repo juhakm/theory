@@ -138,135 +138,6 @@ Let two observers \(O_1, O_2\) share a common prefix \(S\). Then:
 Such observers exhibit correlated outcomes without communication, due to shared structural ancestry.
 
 
-\section{Simulation}
-
-We present a simulation program implementing formal model as Python program.
-
-This simulation models an observer embedded in a spacetime constructed from finite information. It uses a compressed representation of the universe via Fourier basis functions and identifies regions where an observer pattern is likely to occur. The simulation is grounded in the principles of informational physics and is designed to reflect quantum-like probability distributions from a discrete observer-centric perspective.
-
-\subsection*{2.1. Spacetime Representation}
-
-Spacetime is represented as a 2D discrete binary matrix $S \in \{0, 1\}^{H \times W}$, where:
-\begin{itemize}
-    \item $W$: width (spatial extent) of the universe,
-    \item $H$: height (temporal extent),
-    \item Each entry $S_{i,j} = 1$ or $0$ indicates the presence or absence of a bit at spacetime coordinate $(i,j)$.
-\end{itemize}
-
-This binary field $S$ is generated from a real-valued wavefield $R \in \mathbb{R}^{H \times W}$, constructed as follows:
-\begin{equation}
-    R = \mathcal{F}^{-1}(F),
-\end{equation}
-where $F$ is a sparse complex-valued matrix of Fourier coefficients populated with $n_f$ random components, and $\mathcal{F}^{-1}$ denotes the 2D inverse Fourier transform (IFFT). The binary field $S$ is obtained by thresholding $R$:
-\begin{equation}
-    S_{i,j} =
-    \begin{cases}
-        1 & \text{if } R_{i,j} > \theta, \\
-        0 & \text{otherwise},
-    \end{cases}
-\end{equation}
-where $\theta$ is the threshold parameter (typically $\theta = 0$).
-
-\subsection*{2.2. Observer Representation}
-
-The observer is modeled as a binary pattern $O \in \{0,1\}^{k \times k}$, where $k$ is the observer's spatial-temporal extent. An example
-is a circular or disk-like structure, implying emergence, growth, and fading phases in spacetime.
-
-\subsection*{2.3. Match Score}
-
-To identify where the observer is likely to occur in the spacetime field, a convolution operation is used:
-\begin{equation}
-    C = S \ast O,
-\end{equation}
-where $\ast$ denotes 2D cross-correlation (equivalent to convolution with a flipped kernel). The match count is computed as:
-\begin{equation}
-    \text{Matches} = \sum_{i,j} \delta(C_{i,j}, \sum O),
-\end{equation}
-where $\delta(a,b)$ is the Kronecker delta, equal to $1$ if $a = b$, and $0$ otherwise.
-
-\subsection*{2.4. Probability Map}
-
-The continuous wavefield $R$ is convolved with the observer pattern $O$ to construct a real-valued overlap map:
-\begin{equation}
-    \Psi(i,j) = (R \ast O)_{i,j},
-\end{equation}
-and the squared amplitude of this overlap produces a normalized probability map:
-\begin{equation}
-    P(i,j) = \frac{|\Psi(i,j)|^2}{\max_{i,j} |\Psi(i,j)|^2},
-\end{equation}
-which gives probability of the observer existing at $(i,j)$.
-
-\subsection*{2.5. Top Matches}
-
-From the map $P$, the top-$N$ local maxima are selected as the most likely observer instantiations:
-\[
-    \text{TopMatches} = \{(i,j) \in \text{argmax}_N P(i,j)\}
-\]
-with care taken to avoid overlapping detections via spatial masking.
-
-\subsection*{3. Summary}
-
-This simulation constructs a discrete spacetime as a binarized inverse Fourier field and embeds an observer as a localized binary pattern. The overlap of this pattern with the wavefield produces a probability distribution consistent with a quantum mechanical interpretation. The representation is fully informational, observer-centered, and compressive, with no external constants other than simulation parameters.
-
-Note: the simulation parameters can not be interpreted as pre-defined axioms. They are not part of the theory. Ideally the simulation software
-should study all possible observers with all possible universes, with all various ways in which observers can compress their bits to represent  information.
-As this would be computationally very difficult to implement we constraint ourselves to study one obserer and one arbitrarily chosen simulation parameters.
-
-The user interface to the program allows the observer to be defined conveniently as a
-2D dimensional shape, where X dimension corresponds to space and Y corresponds to time.
-Program converts the observer to wavefunction.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/wavefunction_similarity.png}
-    \caption{The wavefunction representation of the discrete observer.}
-    \label{fig:wavefunction_similarity}
-\end{figure}
-
-
-Finite **Fourier components** is used for compressing data.
-This naturally leads to  quantum-probability interpretation of observer presence via wavefunction overlap.
-
-
-\subsection{Output and Results}
-
-The program creates four different plots to visualize the universe that best implements the specified observer.
-
-The plots demonstrate:
-
-\begin{itemize}
-    \item **Wavefunctions** as natural consequence from high-compression bitstring universes.
-    \item **Interference** as the detection mechanism for observer motifs.
-    \item **Physics** as emergent regularities due to filtering process where informational constraints select for structured realities.
-\end{itemize}
-
-From this perspective, quantum behavior, continuity, and even time are statistical artifacts of optimal observer embedding in
-compressible informational structures.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/observer_wave_evolution.png}
-    \caption{Four heatmaps visualizing observer wave evolution in the spacetime. }
-    \label{fig:observer_wave_evolution}
-\end{figure}
-
-Past is those worlds the observer has high similarity. Future is those worlds that the observer has no shared sub-sets, but which the observer can "predict" by extrapolating with the wave function.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/future_particle_heatmap.png}
-    \caption{Heatmap visualizing possible future worlds. The image shows the density of particle trajectories in the future, indicating where observers or particles are likely to find consistent continuations. The future is not a single path but a set of probable continuations shaped by the observer's past. Predictability fades with distance from the current state as possible continuations proliferate. The user can not predict the future very far}
-    \label{fig:future_particle_heatmap}
-\end{figure}
-
-
-The program is hosted at:
-\[
-    \texttt{http://github.com/juhakm/simulations/paper2/simulation.py}
-\]
-
-
-
 \section{Discussion and Implications}
 
 \subsection{Finite Information}
@@ -296,5 +167,141 @@ While abstract, this framework generates testable implications:
     \item Apparent laws of physics reflect compressibility bias, not ontological necessity.
 \end{itemize}
 
+
+
+\section{Supplementary Material: Simulation}
+
+We present a simulation program implementing the formal model as a Python script.
+
+This simulation models an observer embedded in a spacetime constructed from finite information. It uses a compressed representation of the universe via Fourier basis functions and identifies regions where an observer pattern is likely to occur. The simulation is grounded in the principles of informational physics and is designed to reflect quantum-like probability distributions from a discrete, observer-centric perspective.
+
+\subsection*{2.1. Spacetime Representation}
+
+Spacetime is represented as a 2D discrete binary matrix $S \in \{0, 1\}^{H \times W}$, where:
+\begin{itemize}
+    \item $W$: width (spatial extent) of the universe,
+    \item $H$: height (temporal extent),
+    \item Each entry $S_{i,j} = 1$ or $0$ indicates the presence or absence of a bit at spacetime coordinate $(i,j)$.
+\end{itemize}
+
+This binary field $S$ is derived from a real-valued wavefield $R \in \mathbb{R}^{H \times W}$, constructed as:
+\begin{equation}
+    R = \mathcal{F}^{-1}(F),
+\end{equation}
+where $F$ is a sparse complex-valued matrix of Fourier coefficients populated with $n_f$ random components, and $\mathcal{F}^{-1}$ denotes the 2D inverse Fourier transform (IFFT). The binary field $S$ is obtained by thresholding $R$:
+\begin{equation}
+    S_{i,j} =
+    \begin{cases}
+        1 & \text{if } R_{i,j} > \theta, \\
+        0 & \text{otherwise},
+    \end{cases}
+\end{equation}
+where $\theta$ is a threshold parameter (typically $\theta = 0$).
+
+\subsection*{2.2. Observer Representation}
+
+The observer is modeled as a binary pattern $O \in \{0,1\}^{k \times k}$, where $k$ is the observer's spatiotemporal extent. A typical example is a disk-like structure, implying emergence, growth, and fading phases in spacetime.
+
+\subsection*{2.3. Match Score}
+
+To identify where the observer is likely to occur in the spacetime field, a convolution operation is applied:
+\begin{equation}
+    C = S \ast O,
+\end{equation}
+where $\ast$ denotes 2D cross-correlation (equivalent to convolution with a flipped kernel). The total match count is computed as:
+\begin{equation}
+    \text{Matches} = \sum_{i,j} \delta(C_{i,j}, \sum O),
+\end{equation}
+where $\delta(a,b)$ is the Kronecker delta, equal to $1$ if $a = b$, and $0$ otherwise.
+
+\subsection*{2.4. Probability Map}
+
+The continuous wavefield $R$ is convolved with the observer pattern $O$ to construct a real-valued overlap map:
+\begin{equation}
+    \Psi(i,j) = (R \ast O)_{i,j},
+\end{equation}
+and the squared amplitude of this overlap produces a normalized probability map:
+\begin{equation}
+    P(i,j) = \frac{|\Psi(i,j)|^2}{\max_{i,j} |\Psi(i,j)|^2},
+\end{equation}
+which gives the relative probability of the observer being instantiated at location $(i,j)$.
+
+\subsection*{2.5. Top Matches}
+
+From the map $P$, the top-$N$ local maxima are selected as the most likely observer instantiations:
+\[
+    \text{TopMatches} = \{(i,j) \in \text{argmax}_N P(i,j)\}
+\]
+with spatial masking applied to prevent overlapping detections.
+
+\subsection*{3. Summary}
+
+This simulation constructs a discrete spacetime as a binarized inverse Fourier field and embeds an observer as a localized binary pattern. The overlap of this pattern with the wavefield yields a probability distribution consistent with a quantum mechanical interpretation. The representation is fully informational, observer-centered, and compressive, with no external constants beyond simulation parameters.
+
+Importantly, the simulation parameters should not be interpreted as predefined axioms of the theory. Ideally, the simulation would explore all possible observers across all possible universes and encodings. However, due to computational constraints, we focus here on a single observer and a single choice of parameters.
+
+The program allows the observer to be defined as a 2D shape, where the $x$-axis corresponds to space and the $y$-axis to time.
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.8\textwidth}
+        \begin{verbatim}
+    observer = [
+        [0, 0, 1, 0, 0],
+        [0, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1]]
+  \end{verbatim}
+    \end{minipage}
+    \caption{One dimensional observer evolving in time. }
+\end{figure}
+
+This pattern is then converted into a wavefunction via Fourier transformation.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/wavefunction_similarity.png}
+    \caption{The wavefunction representation of the discrete observer.}
+    \label{fig:wavefunction_similarity}
+\end{figure}
+
+A finite number of Fourier components is used for compression, naturally leading to a quantum-like interpretation of observer presence via wavefunction overlap.
+
+\subsection{Output and Results}
+
+The program generates four plots to visualize the universe that best supports the specified observer.
+
+These demonstrate:
+\begin{itemize}
+    \item \textbf{Wavefunctions} as a natural consequence of compressible, high-structure bitstring universes.
+    \item \textbf{Interference} as a mechanism for observer motif detection.
+    \item \textbf{Physics} as emergent structure shaped by informational filtering—where only configurations consistent with compressible observers persist.
+\end{itemize}
+
+From this perspective, quantum behavior, continuity, and even time emerge as statistical artifacts of optimal observer embedding in compressible informational structures.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/observer_wave_evolution.png}
+    \caption{Four heatmaps visualizing observer wave evolution in spacetime.}
+    \label{fig:observer_wave_evolution}
+\end{figure}
+
+The \textit{past} consists of those regions where the observer has high similarity. The \textit{future} consists of regions with no shared subsets, but which the observer can anticipate via extrapolation of its wavefunction.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/future_particle_heatmap.png}
+    \caption{Heatmap visualizing likely future worlds. The density of particle trajectories illustrates where observers are most likely to find consistent continuations. The future is not a single path, but a distribution of possibilities shaped by the observer's current structure. Predictability fades rapidly with increasing distance from the present.}
+    \label{fig:future_particle_heatmap}
+\end{figure}
+
+The program is available at:
+\[
+    \texttt{http://github.com/juhakm/simulations/paper2/simulation.py}
+\]
 
 \end{document}
