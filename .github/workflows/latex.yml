@@ -72,11 +72,14 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      - name: Upload to Personal Server via SFTP
+      - name: Upload PDFs to SFTP
         run: |
-          echo "Uploading PDFs to SFTP..."
-          lftp -u "${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }}" sftp://${{ secrets.SFTP_HOST }} <<EOF
-          set ssl:verify-certificate no
-          mirror -R all-pdfs ${{ secrets.SFTP_TARGET_PATH }}
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -u "$SFTP_USER","$SFTP_PASS" sftp://realsoft.fi <<EOF
+          set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=yes"
+          mirror -R ./pdf /target/folder/on/server
           bye
-          EOF
+      EOF
+        env:
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASS: ${{ secrets.SFTP_PASS }}
