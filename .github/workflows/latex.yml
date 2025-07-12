@@ -82,7 +82,8 @@ jobs:
           SFTP_USER: ${{ secrets.SFTP_USER }}
           SFTP_PASS: ${{ secrets.SFTP_PASS }}
         run: |
-          echo "set sftp:connect-program \"ssh -a -x -o StrictHostKeyChecking=yes\"" > lftp.cmd
+          echo "open -u $SFTP_USER,$SFTP_PASS sftp://realsoft.fi" > lftp.cmd
+          echo "set sftp:connect-program \"ssh -a -x -o StrictHostKeyChecking=yes\"" >> lftp.cmd
           echo "mirror -R ./all-pdfs papers" >> lftp.cmd
           echo "bye" >> lftp.cmd
-          lftp -u "$SFTP_USER","$SFTP_PASS" -f lftp.cmd sftp://realsoft.fi
+          lftp -f lftp.cmd
