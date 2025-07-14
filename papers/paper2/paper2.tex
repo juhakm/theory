@@ -23,11 +23,13 @@
     we propose a radically minimalist foundation for physics based on information only.
     The framework assumes no primitive physical substrate—no predefined spacetime, particles, or fields.
     Everything we observe, from matter to consciousness, is modeled as an emergent structure within a fundamentally informational universe.
+    Spacetime itself arises from the internal extrapolation of the observer’s finite wavefunction.
 \end{abstract}
 
 \section{A Minimal Informational Model of Reality}
 
 This section describes a minimal model of reality based on the hypothesis that observers are substrings of bitstrings. No further structure is assumed.
+The observer does not exist within spacetime — rather, its internal structure defines the scope and scale of what spacetime is.
 
 \subsection{Ontological Basis}
 
@@ -125,7 +127,7 @@ From this emerges a model of the quantum-like wavefunction:
     \item Multiple continuations form a \emph{superposition}, weighted by compressibility, with interference patterns arising from shared substructures.
 \end{itemize}
 
-Under this interpretation, the wavefunction is not a physical field but a \textbf{computationally optimal compression model} used by the observer.
+Under this interpretation, the wavefunction is not a physical field but a \textbf{computationally optimal compression model} representing the observer.
 
 \subsection{Entanglement and Memory Sharing}
 
@@ -137,6 +139,7 @@ Let two observers \(O_1, O_2\) share a common prefix \(S\). Then:
 
 Such observers exhibit correlated outcomes without communication, due to shared structural ancestry.
 
+Crucially, we reinterpret the wavefunction as not embedded within a preexisting spacetime. Instead, the wavefunction defines its own coordinate system: the axes of space and time are abstract dimensions that emerge from the structure of the wavefunction itself. This means that the observer, encoded as a compressed set of oscillatory modes, defines the possible futures and the geometry of its surroundings via extrapolation.
 
 \section{Discussion and Implications}
 
@@ -149,13 +152,34 @@ We do \emph{not assume} that reality must be finite in absolute terms. Instead, 
 \end{enumerate}
 Infinite structures remain mathematically conceivable but play no role in the observer’s emergent perception.
 
-\subsection{Wavefunction as Compression Algorithm}
+\subsection{Observer as Wavefunction}
 
-We argue the quantum wavefunction arises from the \textbf{most efficient compression scheme} a finite observer can construct. Periodic functions—especially sine waves—are favored due to their optimal information density and simplicity, consistent with empirical smoothness in physical laws.
+We propose the quantum wavefunction arises from the \textbf{most efficient compression scheme} a finite observer can construct. Periodic functions—especially sine waves—are favored due to their optimal information density and simplicity, consistent with empirical smoothness in physical laws.
+
+The wavefunction encodes all the information in the observer past and the present. Future is the information extrapolated with the wavefunction.
+
 
 \subsection{Ontological Neutrality}
 
-This model does not presuppose the existence of a physical substrate. Bitstrings may be realized physically, virtually, or abstractly. The theory is agnostic to ontology beyond information and observer-defined structure.
+This model does not presuppose the existence of a physical substrate. The theory is agnostic to ontology beyond information and observer-defined structure.
+
+\subsection{The Observer Generates Spacetime}
+
+We propose a radical shift: the observer does not exist within a spacetime, but instead spacetime is the logical extrapolation of the observer’s internal structure.
+
+From this it follows that:
+
+\begin{itemize}
+    \item The observer’s past and present are the compressible bits it already contains.
+    \item The future and surrounding “universe” are not external — they are inferred wave patterns that must be consistent with the observer’s known structure.
+    \item Spacetime geometry, locality, and even causality are emergent regularities in this extrapolated domain.
+\end{itemize}
+
+\begin{quote}
+    In this view, the universe is not made of things in space and time. It is made of inference: wavefunction amplitudes that project a consistent continuation of the self.
+\end{quote}
+
+This also suggests that traditional physical concepts like “particles,” “fields,” or “external events” are observer-relative interference features — not fundamental entities.
 
 \subsection{Empirical Implications}
 
@@ -168,136 +192,12 @@ While abstract, this framework generates testable implications:
 \end{itemize}
 
 
-
 \section{Supplementary Material: Simulation}
 
 We present a simulation program implementing the formal model as a Python script.
 
-This simulation models an observer embedded in a spacetime constructed from finite information. It uses a compressed representation of the universe via Fourier basis functions and identifies regions where an observer pattern is likely to occur. The simulation is grounded in the principles of informational physics and is designed to reflect quantum-like probability distributions from a discrete, observer-centric perspective.
+This simulation models an observer defined as a finite length bistring. It uses a compressed representation of the bitstring via Fourier basis functions and identifies regions where observer pattern is likely to occur next by extrapolating the wavefunction.
 
-\subsection*{2.1. Spacetime Representation}
-
-Spacetime is represented as a 2D discrete binary matrix $S \in \{0, 1\}^{H \times W}$, where:
-\begin{itemize}
-    \item $W$: width (spatial extent) of the universe,
-    \item $H$: height (temporal extent),
-    \item Each entry $S_{i,j} = 1$ or $0$ indicates the presence or absence of a bit at spacetime coordinate $(i,j)$.
-\end{itemize}
-
-This binary field $S$ is derived from a real-valued wavefield $R \in \mathbb{R}^{H \times W}$, constructed as:
-\begin{equation}
-    R = \mathcal{F}^{-1}(F),
-\end{equation}
-where $F$ is a sparse complex-valued matrix of Fourier coefficients populated with $n_f$ random components, and $\mathcal{F}^{-1}$ denotes the 2D inverse Fourier transform (IFFT). The binary field $S$ is obtained by thresholding $R$:
-\begin{equation}
-    S_{i,j} =
-    \begin{cases}
-        1 & \text{if } R_{i,j} > \theta, \\
-        0 & \text{otherwise},
-    \end{cases}
-\end{equation}
-where $\theta$ is a threshold parameter (typically $\theta = 0$).
-
-\subsection*{2.2. Observer Representation}
-
-The observer is modeled as a binary pattern $O \in \{0,1\}^{k \times k}$, where $k$ is the observer's spatiotemporal extent. A typical example is a disk-like structure, implying emergence, growth, and fading phases in spacetime.
-
-\subsection*{2.3. Match Score}
-
-To identify where the observer is likely to occur in the spacetime field, a convolution operation is applied:
-\begin{equation}
-    C = S \ast O,
-\end{equation}
-where $\ast$ denotes 2D cross-correlation (equivalent to convolution with a flipped kernel). The total match count is computed as:
-\begin{equation}
-    \text{Matches} = \sum_{i,j} \delta(C_{i,j}, \sum O),
-\end{equation}
-where $\delta(a,b)$ is the Kronecker delta, equal to $1$ if $a = b$, and $0$ otherwise.
-
-\subsection*{2.4. Probability Map}
-
-The continuous wavefield $R$ is convolved with the observer pattern $O$ to construct a real-valued overlap map:
-\begin{equation}
-    \Psi(i,j) = (R \ast O)_{i,j},
-\end{equation}
-and the squared amplitude of this overlap produces a normalized probability map:
-\begin{equation}
-    P(i,j) = \frac{|\Psi(i,j)|^2}{\max_{i,j} |\Psi(i,j)|^2},
-\end{equation}
-which gives the relative probability of the observer being instantiated at location $(i,j)$.
-
-\subsection*{2.5. Top Matches}
-
-From the map $P$, the top-$N$ local maxima are selected as the most likely observer instantiations:
-\[
-    \text{TopMatches} = \{(i,j) \in \text{argmax}_N P(i,j)\}
-\]
-with spatial masking applied to prevent overlapping detections.
-
-\subsection*{3. Summary}
-
-This simulation constructs a discrete spacetime as a binarized inverse Fourier field and embeds an observer as a localized binary pattern. The overlap of this pattern with the wavefield yields a probability distribution consistent with a quantum mechanical interpretation. The representation is fully informational, observer-centered, and compressive, with no external constants beyond simulation parameters.
-
-Importantly, the simulation parameters should not be interpreted as predefined axioms of the theory. Ideally, the simulation would explore all possible observers across all possible universes and encodings. However, due to computational constraints, we focus here on a single observer and a single choice of parameters.
-
-The program allows the observer to be defined as a 2D shape, where the $x$-axis corresponds to space and the $y$-axis to time.
-
-\begin{figure}[ht]
-    \centering
-    \begin{minipage}{0.8\textwidth}
-        \begin{verbatim}
-    observer = [
-        [0, 0, 1, 0, 0],
-        [0, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1],
-        [1, 1, 0, 1, 1],
-        [1, 1, 1, 1, 1],
-        [1, 1, 0, 1, 0],
-        [1, 0, 1, 0, 1]]
-  \end{verbatim}
-    \end{minipage}
-    \caption{One dimensional observer evolving in time. }
-\end{figure}
-
-This pattern is then converted into a wavefunction via Fourier transformation.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/wavefunction_similarity.png}
-    \caption{The wavefunction representation of the discrete observer.}
-    \label{fig:wavefunction_similarity}
-\end{figure}
-
-A finite number of Fourier components is used for compression, naturally leading to a quantum-like interpretation of observer presence via wavefunction overlap.
-
-\subsection{Output and Results}
-
-The program generates four plots to visualize the universe that best supports the specified observer.
-
-These demonstrate:
-\begin{itemize}
-    \item \textbf{Wavefunctions} as a natural consequence of compressible, high-structure bitstring universes.
-    \item \textbf{Interference} as a mechanism for observer motif detection.
-    \item \textbf{Physics} as emergent structure shaped by informational filtering—where only configurations consistent with compressible observers persist.
-\end{itemize}
-
-From this perspective, quantum behavior, continuity, and even time emerge as statistical artifacts of optimal observer embedding in compressible informational structures.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/observer_wave_evolution.png}
-    \caption{Four heatmaps visualizing observer wave evolution in spacetime.}
-    \label{fig:observer_wave_evolution}
-\end{figure}
-
-The \textit{past} consists of those regions where the observer has high similarity. The \textit{future} consists of regions with no shared subsets, but which the observer can anticipate via extrapolation of its wavefunction.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/future_particle_heatmap.png}
-    \caption{Heatmap visualizing likely future worlds. The density of particle trajectories illustrates where observers are most likely to find consistent continuations. The future is not a single path, but a distribution of possibilities shaped by the observer's current structure. Predictability fades rapidly with increasing distance from the present.}
-    \label{fig:future_particle_heatmap}
-\end{figure}
 
 The program is available at:
 \[
