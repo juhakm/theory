@@ -7,7 +7,7 @@ import os
 # === Configuration ===
 path = os.path.join("simulations", "paper2")
 image_path = os.path.join(path, "observer.png")
-num_freqs = 100  # Number of frequencies to fit in each dimension
+num_freqs = 20  # Number of frequencies to fit in each dimension
 
 # === Load grayscale image ===
 image = Image.open(image_path).convert("L")
@@ -73,8 +73,8 @@ plt.tight_layout()
 plt.show()
 
 # === Extrapolation setup ===
-extrap_height = 64
-extrap_width = 64
+extrap_height = 128
+extrap_width = 128
 pad_x = (extrap_width - width) // 2
 pad_y = (extrap_height - height) // 2
 
