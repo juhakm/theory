@@ -84,4 +84,3 @@ jobs:
           # Upload files using curl
           find ./all-pdfs -name '*.pdf' -exec ls -l {} \;
           find ./all-pdfs -name '*.pdf' -exec curl -v -k --ftp-ssl -u "$FTP_USER:$FTP_PASS" -T {} ftp://realsoft.fi \;
-	  
