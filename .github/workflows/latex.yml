@@ -76,14 +76,11 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "realsoft.fi ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJblFT50zmX8ME8kVqM1ElGu4SHUSkFlqFMD7tycDXqb" >> ~/.ssh/known_hosts
-
-      - name: Upload PDFs to SFTP
+      - name: Upload PDFs to FTP using curl
         env:
-          SFTP_USER: ${{ secrets.SFTP_USER }}
-          SFTP_PASS: ${{ secrets.SFTP_PASS }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
         run: |
-          echo "open -u $SFTP_USER,$SFTP_PASS sftp://realsoft.fi" > lftp.cmd
-          echo "set sftp:connect-program \"ssh -a -x -o StrictHostKeyChecking=yes\"" >> lftp.cmd
-          echo "mirror -R ./all-pdfs papers" >> lftp.cmd
-          echo "bye" >> lftp.cmd
-          lftp -f lftp.cmd
+          # Upload files using curl
+          curl -v -k --ftp-ssl -u $FTP_USER:$FTP_PASS -T ./all-pdfs/* ftp://realsoft.fi/papers/
+
