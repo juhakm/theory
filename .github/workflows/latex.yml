@@ -82,6 +82,6 @@ jobs:
           FTP_PASS: ${{ secrets.SFTP_PASS }}
         run: |
           # Upload files using curl
-          ls -l ./all-pdfs/*.pdf
-          curl -v -k --ftp-ssl -u "$FTP_USER:$FTP_PASS" -T ./all-pdfs/* ftp://realsoft.fi
-
+          find ./all-pdfs -name '*.pdf' -exec ls -l {} \;
+          find ./all-pdfs -name '*.pdf' -exec curl -v -k --ftp-ssl -u "$FTP_USER:$FTP_PASS" -T {} ftp://realsoft.fi \;
+	  
