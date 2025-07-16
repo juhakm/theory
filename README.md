@@ -8,15 +8,19 @@ universe emerges from pure abstract information with no predefined subtrace.
 
 ## Project Overview
 
-The core idea behind *The Abstract Universe Project* is that physical reality, including spacetime and consciousness, can be understood as 
-emergent phenomena arising from abstract, discrete information. The project combines formal mathematical theory, simulation experiments, 
-and computational visualizations to investigate these concepts.
+The project combines formal mathematical theory, simulation experiments, and computational visualizations to investigate these concepts.
 
 Key components include:
 
 - **LaTeX Papers:** Rigorous formulations, proofs, and theoretical discussions outlining the foundational assumptions and implications.
 - **Simulations:** Programs simulating dust clouds, gravitational dynamics, entropy evolution, and observer-centric processes.
 - **Data & Visualizations:** Outputs such as animations, entropy maps, and geometric renderings illustrating theoretical predictions.
+
+---
+
+## Publications
+
+- [here](https://realsoft.com/abstract/).
 
 ---
 
