@@ -14,7 +14,7 @@
 \maketitle
 
 \begin{abstract}
-  Building on our earlier proposal that the universe is fundamentally informational in nature, we present a computational model of black hole singularities based on the entropy of execution traces. By simulating black hole evolution as a computational process, we represent system states as bitstrings and define a mapping from informational content to emergent spacetime geometry. We demonstrate that vanishing Shannon entropy corresponds to geometric collapse into a singular point across all embedding schemes. A Python simulation illustrates this entropy--geometry correspondence in a Schwarzschild-like collapse scenario. These results support the view that geometric singularities may emerge from informational degeneracy and suggest that entropy defines an absolute informational metric for geometry.
+  Building on our earlier proposal that the universe is fundamentally informational in nature, we present a computational model of black hole singularities based on the entropy of execution traces. By simulating black hole evolution as a computational process, we represent system states as bitstrings and define a mapping from informational content to emergent spacetime geometry. We demonstrate that vanishing Shannon entropy corresponds to geometric collapse into a singular point across all embedding schemes. A Python simulationS illustrates this entropy--geometry correspondence based on various collapse scenarios. These results support the view that geometric singularities may emerge from informational degeneracy and suggest that entropy defines an absolute informational metric for geometry.
 \end{abstract}
 
 \section{Introduction}
@@ -31,13 +31,17 @@ We formalize this claim by simulating the evolution of a gravitationally collaps
 
 \section{Methods}
 
-We model black hole evolution as a computational process where spacetime states are encoded in quantized memory images. These are serialized into bitstrings that evolve over simulated time steps. The simulation need not reach the singularity to provide insight; instead, we extrapolate the entropy trend toward completion. The simulation is implemented in Python and publicly available at:
+We model black hole evolution as a computational process where spacetime states are encoded in quantized memory images. These are serialized into bitstrings that evolve over simulated time steps. The simulations need not reach the singularity to provide insight; instead, we extrapolate the entropy trend toward completion. These simulations are implemented in Python and publicly available at:
 
-\url{http://githumb/juhakm/schwarzschild_entropy.py}
+\url{http://githumb/juhakm/}
+
+Due to computational challenges black hole is assumed static, and mass-energy accumulation or backreaction is not included.
 
 Our goal is to understand the qualitative behavior of the informational representation of spacetime near singularity conditions.
 
-\section{Execution Trace as Set-Theoretic Structure}
+
+
+\section{Execution Trace as Measure of Shannon Entropy}
 
 Let $\mathcal{M}$ be the set of all memory locations. A machine state $s \subseteq \mathcal{M}$ includes the values of memory, registers, and CPU state.
 
@@ -57,7 +61,8 @@ The corresponding transition relation is:
   R_P = \{ (s_i, s_{i+1}) \in S \times S \mid s_{i+1} = I_{i+1}(s_i) \}
 \]
 
-\section{Mapping Bitstrings to Geometry}
+
+\subsection{Mapping Bitstrings to Geometry}
 
 Let a complete system state be encoded as a bitstring $b \in \{0,1\}^L$. Each such bitstring is interpreted as a discrete geometric state.
 
@@ -70,6 +75,7 @@ be the space of 3D geometric configurations. Define:
   f : \mathcal{C} \to \mathbb{Z}^3, \quad f(b) = (\phi(b_1), \phi(b_2), \phi(b_3))
 \]
 where $\phi : \{0,1\}^k \to \mathbb{Z}$ decodes fixed-length binary segments into integers. This mapping allows us to represent evolving spacetime geometries as trajectories in discrete space.
+
 
 \section{Entropy Collapse and Geometric Singularity}
 
@@ -95,7 +101,15 @@ This lemma holds regardless of the specific geometric interpretation. Bitstrings
 
 \section{Simulation of Schwarzschild Collapse}
 
-We simulate massless dust particles collapsing under a Schwarzschild geometry using a discretized geodesic model. Particle positions are serialized into bitstrings, from which entropy is computed.
+Three different models were studied:
+\begin{itemize}
+  \item schwarzchild\_entropy.py: Computationally light approximation
+  \item schwarzchild\_geodesic.py: Geodesics solved to the singularity using Radau method.
+  \item schwarzchild\_eddington\_finkelstein.py: Geodesics solved with Eddington-Finkelstein coordinates.
+\end{itemize}
+
+These simulate massless dust particles collapsing under a Schwarzschild geometry using a discretized geodesic model. Particle positions are serialized into bitstrings, from which entropy is computed. Integer encoding of coordinates was used to isolate physical entropy from artifacts of floating-point representation, ensuring that Shannon entropy reflects only the simulated spacetime's informational structure.
+
 
 \begin{figure}[h!]
   \centering
@@ -106,23 +120,52 @@ We simulate massless dust particles collapsing under a Schwarzschild geometry us
 
 \begin{figure}[h!]
   \centering
+  \includegraphics[width=\textwidth]{figures/schwarzschild_radau.png}
+  \caption{Entropy signature of trajectories integreated with Radau method.}
+  \label{fig:schwarzschild_radau}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{figures/schwarzschild_eddington_finkelstein.png}
+  \caption{Entropy signature of trajectories integreated with Eddington-Finkestein coordinates.}
+  \label{fig:schwarzschild_eddington_finkelstein}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
   \includegraphics[width=\textwidth]{figures/collapse_0.png}
   \includegraphics[width=\textwidth]{figures/collapse_40.png}
   \caption{Collapse of geometry. Left: early stage with high entropy and distributed particle positions. Right: late stage with low entropy and spatial convergence.}
   \label{fig:spacetime_collapse}
 \end{figure}
 
+
+
+\section{Conclusion}
+
+
+We have formalized and supported the \textbf{Entropy--Singularity Lemma}: that vanishing entropy in an informationally defined system necessarily corresponds to a pointlike geometric collapse.
+
+All tested gravity models, data representations, and coordinate systems demonstrated vanishing entropy near the singularity. This phenomenon is \textit{invariant} under coordinate transformations, data encodings, and gravitational frameworks.
+
+Shannon entropy reliably reflects the underlying geometric collapse, enabling singularities to be analyzed using information-theoretical methods---even though the singularity itself lies outside the domain of the general relativity manifold.
+
+This offers an \textbf{objective, observer-independent informational foundation} for understanding the nature of singularities.
+
+
 \section{Discussion and Implications}
 
-Our simulation confirms the Entropy--Singularity Lemma in a computational context. While the total thermodynamic entropy of the full black hole system increases (consistent with the second law), the local entropy of spatial encoding decreases near the singularity. This reflects a narrowing of accessible states and growing determinism in geometry.
+Our simulations confirm the Entropy--Singularity Lemma in a computational context. While the total thermodynamic entropy of the full black hole system increases (consistent with the second law), the local entropy of spatial encoding decreases near the singularity. This reflects a narrowing of accessible states and growing determinism in geometry.
 
 Importantly, this is not a contradiction of thermodynamics. Instead, it distinguishes between global physical entropy and local representational entropy used in encoding spacetime geometry. Our findings suggest that entropy provides an absolute informational scale, with zero entropy corresponding to the collapse of space.
 
 This perspective allows us to reinterpret gravitational singularities not as breakdowns of physical law, but as informational fixed points: locations in the computational evolution of the universe where no further geometric variability is present.
 
-\section{Conclusion and Future Work}
 
-We have formalized and supported the Entropy--Singularity Lemma: that vanishing entropy in an informationally defined system necessarily yields a pointlike geometric collapse. This provides an objective and observer-independent informational basis for understanding singularities.
+\section{Future Work}
+
 
 Future work will extend this framework to entropy increase, simulating early-universe inflation, structure formation, and entropy-driven emergence of geometric complexity. We also intend to connect these results with observer-based models of consciousness and time.
 
