@@ -71,7 +71,7 @@ def make_basis(freqs_t, freqs_x, freqs_y, shape):
     cos_list = []
 
     for ft in freqs_t:
-        for fx in freqs_x:
+        for fx in freqs_x:J
             for fy in freqs_y:
                 phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy)
                 sin_list.append(np.sin(phase))
