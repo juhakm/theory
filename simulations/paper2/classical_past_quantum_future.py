@@ -27,6 +27,37 @@ num_frames, height, width = obs.shape
 t0 = 5  # Observer has seen frames [0, ..., t0-1]
 obs_known = obs[:t0]
 
+
+def make_basis_vectors(T, H, W, num_freqs=4):
+    """Return matrix A with each column being a flattened basis component."""
+    t = np.linspace(0, 1, T)
+    x = np.linspace(0, 1, H)
+    y = np.linspace(0, 1, W)
+    tt, xx, yy = np.meshgrid(t, x, y, indexing='ij')
+
+    components = []
+    for i in range(num_freqs):
+        for j in range(num_freqs):
+            for k in range(num_freqs):
+                sin_term = np.sin(2 * np.pi * (i * tt + j * xx + k * yy))
+                cos_term = np.cos(2 * np.pi * (i * tt + j * xx + k * yy))
+                components.append(sin_term.ravel())
+                components.append(cos_term.ravel())
+    A = np.stack(components, axis=1)  # Shape: (T*H*W, 2*num_freqs^3)
+    return A
+
+def fit_linear_model(obs, num_freqs=4):
+    T, H, W = obs.shape
+    A = make_basis_vectors(T, H, W, num_freqs)
+    b = obs.ravel()
+    params, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
+    return params, A
+
+def reconstruct_from_params(params, A, T, H, W):
+    reconstruction = A @ params
+    return reconstruction.reshape((T, H, W))
+
+
 # === Build 3D sinusoidal basis ===
 def make_basis(freqs_t, freqs_x, freqs_y, shape):
     T, H, W = shape
@@ -90,10 +121,14 @@ for i, (ft, fx, fy) in enumerate(freq_triples):
     phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy) + phases[i]
     Ψ += amps[i] * np.exp(1j * phase)
 
+## === Fit only to known past (fast linear version) ===
+params, A = fit_linear_model(obs_known, num_freqs=num_freqs)
+Ψ_reconstructed = reconstruct_from_params(params, A, *obs.shape)
+
 # === Compare real vs predicted future ===
 actual_future = obs[t0:]
-predicted_future = np.abs(Ψ[t0:]) ** 2
-predicted_future /= np.max(predicted_future, axis=(1, 2), keepdims=True)
+predicted_future = Ψ_reconstructed[t0:]
+predicted_future = np.clip(predicted_future, 0.0, 1.0)
 
 # === Animate actual vs predicted ===
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
@@ -102,7 +137,7 @@ def update(frame_idx):
     ax1.clear()
     ax2.clear()
     ax1.set_title(f"Actual Observer t={t0 + frame_idx}")
-    ax2.set_title(f"Predicted |Ψ|² t={t0 + frame_idx}")
+    ax2.set_title(f"Predicted t={t0 + frame_idx}")
 
     ax1.imshow(actual_future[frame_idx], cmap="gray")
     ax2.imshow(predicted_future[frame_idx], cmap="viridis")
@@ -116,4 +151,4 @@ plt.show()
 # === Optional: error metric ===
 for i in range(num_frames - t0):
     diff = np.abs(actual_future[i] - predicted_future[i])
-    print(f"t={t0+i}: max |obs - |Ψ|²| = {np.max(diff):.4f}, mean = {np.mean(diff):.4f}")
+    print(f"t={t0+i}: max |obs - prediction| = {np.max(diff):.4f}, mean = {np.mean(diff):.4f}")

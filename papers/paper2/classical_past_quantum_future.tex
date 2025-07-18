@@ -1,9 +1,8 @@
-\documentclass\[11pt]{article}
 
+\documentclass{article}
 \usepackage{amsmath, amssymb, graphicx, hyperref}
-\usepackage\[margin=1in]{geometry}
 
-\title{Simulation of Classical-Past and Quantum-Future using Wavefunction Fitting}
+\title{Simulation of Observer-Centric Wavefunction Evolution}
 \author{Juha Meskanen}
 \date{\today}
 
@@ -11,49 +10,37 @@
 
 \maketitle
 
-\section\*{Abstract}
-We present a numerical simulation that models the observer's experience of a fixed classical past and an open quantum future. The method operates by fitting a set of sinusoidal basis functions to a complex-valued wavefunction \$\Psi(x, y, t)\$ using only information from a fixed time window, corresponding to the observer's "past". The future evolution of the system emerges from the complex linear combination of basis functions, illustrating superposition, interference, and the branching structure typical of quantum systems.
-
 \section{Introduction}
-The simulation is inspired by foundational questions in quantum mechanics and the observer's role in shaping reality. In particular, we aim to explore how the subjective arrow of time---with a determined past and an indeterminate future---can be naturally reflected in the formalism of wavefunction evolution.
+This document serves as a supplementary explanation of the computational model used to simulate the evolution of an observer-centric wavefunction $\Psi(x, y, t)$ within a discretized environment. The simulation aims to illustrate a physically motivated separation between a \emph{collapsed classical past} and a \emph{superposition-based quantum future}.
 
-\section{Overview of the Model}
-Let \$\Psi(x, y, t)\$ denote a complex-valued quantum wavefunction defined over a 3D spacetime lattice. The key idea is to reconstruct \$\Psi\$ as a linear combination of sinusoidal basis functions:
-\begin{equation}
-\Psi(x, y, t) = \sum\_{i=1}^N A\_i \exp\left(2\pi i (f\_{x,i} x + f\_{y,i} y + f\_{t,i} t) + i\theta\_i\right),
-\end{equation}
-where \$A\_i\$ and \$\theta\_i\$ are the amplitude and phase of each basis component, and \$(f\_{x,i}, f\_{y,i}, f\_{t,i})\$ are the spatial and temporal frequencies.
+\section{Conceptual Foundation}
 
-\section{Fitting Procedure}
-We assume that the full complex-valued wavefunction \$\Psi(x, y, t)\$ is only known (or observed) for times \$t < t\_0\$. This portion of the wavefunction is treated as the observer's classical past. The task is then to determine the best-fit set of parameters \${A\_i, \theta\_i, f\_{x,i}, f\_{y,i}, f\_{t,i}}\$ such that the reconstructed wavefunction matches the observed data in the past:
-\begin{equation}
-\text{Minimize} \quad |\Psi\_{\text{reconstructed}}(x, y, t < t\_0) - \Psi\_{\text{obs}}(x, y, t < t\_0)|^2.
-\end{equation}
+The observer is treated as a part of the universal wavefunction, encoded as a bistring (binary string) that evolves in discrete time steps. At each time step, the simulation records a snapshot of the observer's knowledge of their universe, saved as images named \texttt{observer*.png}. These images visually represent $\Psi(x, y, t)$ as perceived by the observer at that moment.
 
-This fitting problem is solved using nonlinear least squares optimization (via SciPy), where only the known "past" portion of \$\Psi\$ is used to constrain the solution.
+The simulation embodies the principle that information from the environment is encoded into the observer's state. Consequently, the classical past---where observations have already been made---is depicted with well-defined, collapsed features, while the quantum future remains open, represented by interference and probabilistic behavior.
 
-\section{Future Evolution and Quantum Superposition}
-Once the parameters are fitted, the wavefunction \$\Psi\$ can be reconstructed over all \$t\$, including \$t \geq t\_0\$. This constitutes the open quantum future. Because the reconstruction involves coherent summation of complex sinusoidal components, the result naturally includes:
-\begin{itemize}
-\item Interference patterns
-\item Phase coherence
-\item Multimodal probability distributions \$|\Psi(x, y, t)|^2\$
-\end{itemize}
+\section{Technical Description}
 
-The result is a future that is not determined by observation, but emerges through quantum evolution governed by the chosen basis and parameters.
+The simulation discretizes time, space, and wavefunction amplitude. At each iteration:
+\begin{enumerate}
+    \item The current observer state is updated using a complex-valued wavefunction $\Psi(x, y, t)$.
+    \item The amplitude and phase are stored for visualization and analysis.
+    \item An optimization pass can be applied to reconstruct or approximate future states using a Fourier basis, but this is an optional enhancement.
+\end{enumerate}
 
-\section{Interpretational Implications}
-This approach gives a computational model for the subjective experience of time in quantum mechanics:
-\begin{itemize}
-\item The past is "collapsed" by observation (via fitting).
-\item The future is a coherent quantum superposition.
-\item The present \$t = t\_0\$ marks a branching point, consistent with many-worlds and decoherence interpretations.
-\end{itemize}
+\section{Mathematical Model}
+
+We define the wavefunction $\Psi(x, y, t)$ over a grid of size $H \times W$ with $T$ discrete time steps. The evolution may be governed by Schrödinger-type dynamics or any other physically inspired rule.
+
+\subsection{Fourier-Based Approximation (Optional)}
+An optional optimization pass fits a linear combination of temporal basis functions (e.g., $\sin(\omega t), \cos(\omega t)$) to approximate $\Psi$ over time. This is computationally efficient but sacrifices the complex-valued interference patterns crucial for simulating full quantum behavior.
+
+\section{Usage and Output}
+
+The simulation outputs image files representing the wavefunction at each time step from the observer's point of view. These snapshots can be compiled into a video or animation, enabling visual inspection of phenomena such as interference, decoherence, and the gradual divergence between the classical past and quantum future.
 
 \section{Conclusion}
-The simulation demonstrates a minimal yet powerful formalism that captures the asymmetry between past and future as experienced by an observer embedded in a quantum system. The past is encoded through data fitting, and the future unfolds through deterministic wavefunction propagation, exhibiting typical quantum phenomena such as interference and coherence.
 
-\section\*{Supplementary Material}
-The source code for the simulation is available upon request or can be included as an appendix.
+This simulation framework visualizes the flow of time from an observer-centric viewpoint within a discretized quantum universe. The focus on bistring evolution and wavefunction imagery provides a novel approach to understanding how localized observation leads to classicality, while future possibilities remain open in superposition.
 
 \end{document}

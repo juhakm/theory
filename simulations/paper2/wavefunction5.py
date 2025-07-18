@@ -8,7 +8,7 @@ import os
 # === Configuration ===
 path = os.path.join("simulations", "paper2")
 num_images = 8
-image_paths = [os.path.join(path, f"observer{i}.png") for i in range(num_images)]
+image_paths = [os.paJth.join(path, f"observer{i}.png") for i in range(num_images)]
 num_freqs = 10  # Number of frequencies in each spatial dimension
 
 # === Load grayscale images as a 3D volume: time x height x width ===
