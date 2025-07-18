@@ -9,21 +9,25 @@ import os
 path = os.path.join("simulations", "paper2")
 num_images = 8
 image_paths = [os.path.join(path, f"observer{i}.png") for i in range(num_images)]
-num_freqs = 10  # Number of frequencies in each spatial dimension
+num_freqs = 10
 
-# === Load grayscale images as a 3D volume: time x height x width ===
+# === Load grayscale images ===
 def load_images(paths):
     frames = []
     for p in paths:
-        image = Image.open(p).convert("L")
-        frame = np.array(image, dtype=np.float32) / 255.0
+        img = Image.open(p).convert("L")
+        frame = np.array(img, dtype=np.float32) / 255.0
         frames.append(frame)
     return np.stack(frames, axis=0)
 
 obs = load_images(image_paths)  # shape: (T, H, W)
 num_frames, height, width = obs.shape
 
-# === Generate 3D sinusoids: time + x + y ===
+# === Define fitting boundary (observer's present) ===
+t0 = 5  # Observer has seen frames [0, ..., t0-1]
+obs_known = obs[:t0]
+
+# === Build 3D sinusoidal basis ===
 def make_basis(freqs_t, freqs_x, freqs_y, shape):
     T, H, W = shape
     t = np.linspace(0, 1, T, dtype=np.float32)
@@ -31,7 +35,7 @@ def make_basis(freqs_t, freqs_x, freqs_y, shape):
     y = np.linspace(0, 1, H, dtype=np.float32)
     tt, yy, xx = np.meshgrid(t, y, x, indexing='ij')
 
-    freq_triples = []
+    triples = []
     sin_list = []
     cos_list = []
 
@@ -41,28 +45,26 @@ def make_basis(freqs_t, freqs_x, freqs_y, shape):
                 phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy)
                 sin_list.append(np.sin(phase))
                 cos_list.append(np.cos(phase))
-                freq_triples.append((ft, fx, fy))
+                triples.append((ft, fx, fy))
 
-    sin_basis = np.stack(sin_list, axis=0)  # shape: (N, T, H, W)
-    cos_basis = np.stack(cos_list, axis=0)
-    return freq_triples, sin_basis, cos_basis
+    return triples, np.stack(sin_list), np.stack(cos_list)
 
-# Precompute basis
-freqs = np.linspace(0, 3, num_freqs, dtype=np.float32)
+freqs = np.linspace(0, 3, num_freqs)
 freq_triples, sin_basis, cos_basis = make_basis(freqs, freqs, freqs, obs.shape)
 num_components = len(freq_triples)
 
-# === Flattened model ===
+# === Optimized model function ===
 def model(params):
     amps = params[:num_components]
     phases = params[num_components:]
     img = np.tensordot(amps * np.cos(phases), cos_basis, axes=(0, 0)) + \
           np.tensordot(amps * np.sin(phases), sin_basis, axes=(0, 0))
-    return img.ravel()
+    return img.reshape(obs.shape)
 
-# === Objective function ===
+# === Residuals for fitting only past ===
 def residuals(params):
-    return model(params) - obs.ravel()
+    prediction = model(params)
+    return (prediction[:t0] - obs_known).ravel()
 
 # === Initial guess ===
 np.random.seed(0)
@@ -70,26 +72,11 @@ init_amps = 0.1 * np.random.randn(num_components)
 init_phases = 2 * np.pi * np.random.rand(num_components)
 params0 = np.concatenate([init_amps, init_phases])
 
-# === Fit ===
+# === Fit only to known past ===
 result = least_squares(residuals, params0, verbose=2, max_nfev=500)
+Ψ_reconstructed = model(result.x)
 
-# === Reconstruct fitted image ===
-fitted = model(result.x).reshape(obs.shape)
-
-# === Visualization ===
-plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
-plt.title("Original Frame 0")
-plt.imshow(obs[0], cmap="gray")
-plt.axis('off')
-
-plt.subplot(1, 2, 2)
-plt.title("Fitted Frame 0")
-plt.imshow(fitted[0], cmap="gray")
-plt.axis('off')
-plt.show()
-
-# === Build complex wavefunction Ψ(x, y, t) ===
+# === Build complex wavefunction Ψ(x,y,t) ===
 t = np.linspace(0, 1, num_frames, dtype=np.float32)
 x = np.linspace(0, 1, width, dtype=np.float32)
 y = np.linspace(0, 1, height, dtype=np.float32)
@@ -98,37 +85,35 @@ tt, yy, xx = np.meshgrid(t, y, x, indexing='ij')
 amps = result.x[:num_components]
 phases = result.x[num_components:]
 
-Psi_t = np.zeros((num_frames, height, width), dtype=np.complex128)
+Ψ = np.zeros((num_frames, height, width), dtype=np.complex128)
 for i, (ft, fx, fy) in enumerate(freq_triples):
     phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy) + phases[i]
-    Psi_t += amps[i] * np.exp(1j * phase)
+    Ψ += amps[i] * np.exp(1j * phase)
 
-# === Animate evolution as probability density |Ψ|^2 ===
-fig, ax = plt.subplots()
+# === Compare real vs predicted future ===
+actual_future = obs[t0:]
+predicted_future = np.abs(Ψ[t0:]) ** 2
+predicted_future /= np.max(predicted_future, axis=(1, 2), keepdims=True)
 
-def update(frame):
-    prob_density = np.abs(Psi_t[frame])**2
-    prob_density /= prob_density.max()
-    ax.clear()
-    ax.imshow(prob_density, cmap="viridis")
-    ax.set_title(f"|Ψ|² at t={frame}")
-    ax.axis('off')
+# === Animate actual vs predicted ===
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
-ani = animation.FuncAnimation(fig, update, frames=num_frames, interval=400)
+def update(frame_idx):
+    ax1.clear()
+    ax2.clear()
+    ax1.set_title(f"Actual Observer t={t0 + frame_idx}")
+    ax2.set_title(f"Predicted |Ψ|² t={t0 + frame_idx}")
 
-# === Show static comparison ===
-plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
-plt.title("Original Observer t=0")
-plt.imshow(obs[0], cmap="gray")
-plt.axis('off')
+    ax1.imshow(actual_future[frame_idx], cmap="gray")
+    ax2.imshow(predicted_future[frame_idx], cmap="viridis")
+    for ax in [ax1, ax2]:
+        ax.axis('off')
 
-plt.subplot(1, 2, 2)
-plt.title("|Ψ(x,y,t=0)|")
-plt.imshow(np.abs(Psi_t[0]), cmap="gray")
-plt.axis('off')
+ani = animation.FuncAnimation(fig, update, frames=num_frames - t0, interval=500)
+plt.tight_layout()
 plt.show()
 
-# === Difference Metric ===
-diff = np.max(np.abs(obs[0] - np.abs(Psi_t[0])))
-print(f"Max abs difference (frame 0): {diff:.6f}")
+# === Optional: error metric ===
+for i in range(num_frames - t0):
+    diff = np.abs(actual_future[i] - predicted_future[i])
+    print(f"t={t0+i}: max |obs - |Ψ|²| = {np.max(diff):.4f}, mean = {np.mean(diff):.4f}")
