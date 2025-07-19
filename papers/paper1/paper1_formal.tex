@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm, hyperref}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{../references.bib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Physics as an Emergent Property of the Observer: A Formal Derivation from Four Axioms}
+\author{Juha Meskanen}
+\date{July 2019}
+
+% Theorem styles
+\newtheorem{axiom}{Axiom}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a formal derivation of consciousness and subjective experience from four physically motivated axioms. We argue that human observers are best modeled as formal axiomatic systems whose internal information states give rise to the illusion of time, and that reality emerges from these systems rather than the other way around. The conclusions imply that the universe may be virtual, and that time is observer-relative. Each claim is backed by mathematical reasoning, and the model is falsifiable in principle.
+\end{abstract}
+
+\section{Context and Motivation}
+This paper targets researchers in the foundations of physics, with secondary relevance to computational theory. Philosophical speculation is intentionally avoided; we work strictly from four empirical assumptions and derive logical consequences using formal mathematics. The motivation is to understand how fundamental physical properties such as time and conscious experience could emerge from a low-entropy informational structure undergoing lawful evolution.
+
+\section{Background}
+Our model aligns partially with discussions in Penrose's work \cite{penrose1989emperor}, particularly concerning the 
+non-computability of consciousness and the nature of time as discussed in \textit{The Nature of Space and Time} \cite{hawking1996nature}. 
+In contrast to Penrose, we argue the opposite: that all aspects of observer experience can be derived from computable laws. 
+Our views also echo elements of Bostrom's simulation argument \cite{bostrom2003}, although our derivation stems from foundational 
+physical assumptions rather than anthropic reasoning.
+
+
+\section{Axioms}
+
+\begin{axiom}[Informational Sufficiency]
+There exists a computable function $f: \text{DNA} \rightarrow O$ from the human genome to observer state space $O$, such that $f(\text{DNA})$ encodes all necessary information for consciousness.
+\end{axiom}
+
+\begin{axiom}[Physical Law Obedience]
+All state evolution in biological systems is governed by physical laws expressible as computable transition functions $\delta(x, t)$, where $x$ is the system's state.
+\end{axiom}
+
+\begin{axiom}[Computational Universality]
+All physically realizable processes can be simulated with arbitrary precision by a Turing machine.
+\end{axiom}
+
+\begin{axiom}[Functional Consciousness]
+Subjective experience, such as the human feeling of pain, has measurable consequences in the system's evolution. Formally, if $A$ is the observer system, then $A + \text{Experience} \neq A$. These are not algorithmic automations but true experiential phenomena with causal efficacy.
+\end{axiom}
+
+\section{Formal Definitions}
+
+\begin{definition}[Observer]
+An \textbf{observer} is a finite, low-entropy informational structure $O$ evolving under transition rules $\delta$ such that its internal states form a totally ordered sequence $\{S_t\}$ with $t \in \mathbb{N}$. Consciousness is an emergent property of $O$ if the system encodes and reacts to subjective experience with measurable internal consequences.
+\end{definition}
+
+\section{Derived Results}
+
+\begin{lemma}[Observers as Axiomatic Systems]
+From Axioms 1 and 2, the observer is a formal system whose behavior follows from initial data (DNA) and deterministic or probabilistic laws.
+\end{lemma}
+\begin{proof}
+Axiom 1 posits DNA encodes all relevant structure. Axiom 2 states the evolution of this data is governed by physical law. Therefore, the pair $(\text{DNA}, \delta)$ defines a formal system.
+\end{proof}
+
+\begin{theorem}[Substrate Invariance]
+Let $A$ be a system defined by $(\text{DNA}, \delta)$. Then any Turing-equivalent implementation of $A$ yields isomorphic internal state transitions.
+\end{theorem}
+\begin{proof}
+By Axiom 3, any physical implementation can be emulated by a Turing machine. Thus, changes in hardware substrate do not alter the formal behavior of the system.
+\end{proof}
+
+\begin{lemma}[Time is Observer-Relative]
+If internal states of an observer form a total order under transition function $\delta$, then the experience of time is emergent from the observer's structure.
+\end{lemma}
+\begin{proof}
+Time is experienced as a sequence of state transitions. These transitions are governed by internal dynamics, not wall-clock time, hence time is internal to the formal system.
+\end{proof}
+
+\begin{theorem}[Static Data Can Encode Experience]
+Let $T$ be the full execution trace of an observer. Then $T$ can be precomputed and stored as a static dataset, which preserves all subjective experience.
+\end{theorem}
+\begin{proof}
+Given $(\text{DNA}, \delta)$, $T$ is computable. Storing $T$ as a dataset preserves its informational structure. The observer's experience depends only on this structure.
+\end{proof}
+
+\begin{corollary}[Consciousness from Noise]
+Even interleaved or permuted bit-level execution traces may encode valid conscious experiences.
+\end{corollary}
+\begin{proof}
+If a trace $T$ is logically reconstructable from noise-like permutations (e.g., multithreading), the underlying experience remains invariant to external structure.
+\end{proof}
+
+\begin{theorem}[Virtuality Recursion]
+If a universe $\mathcal{S}_i$ simulates another $\mathcal{S}_{i+1}$, and the simulation is faithful, then $\mathcal{S}_i$ is informationally equivalent to $\mathcal{S}_{i+1}$.
+\end{theorem}
+\begin{proof}
+Follows from Lemma 1 and Theorem 1. Each level re-implements the same structure. There is no informational basis to privilege one level.
+\end{proof}
+
+\begin{corollary}[No Ontological Ground Level]
+If any level in a simulation hierarchy is virtual, then all levels must be.
+\end{corollary}
+
+\section{Falsifiability}
+The model makes a clear and testable prediction: if simulated observers generated from DNA data demonstrate behavioral responses to subjective experience (such as pain) that are statistically indistinguishable from those of real humans, then the simulation must encode true experiential states. The test proceeds as follows:
+
+\begin{enumerate}
+  \item Digitally simulate human DNA to produce a virtual human.
+  \item Apply standardized noxious stimuli to real humans and record behavioral responses.
+  \item Apply simulated noxious stimuli to virtual humans and record outputs.
+  \item Compare results statistically.
+\end{enumerate}
+
+If virtual humans systematically fail to exhibit experiential responses despite architectural equivalence, Axiom 4 is falsified and the model is invalidated.
+
+\section{Conclusion}
+
+We have shown, starting from four axioms grounded in biology and computation, that time and consciousness can emerge from purely informational systems. These results suggest that reality is virtual and observer-dependent. Time is not fundamental—it is derived.
+
+\printbibliography
+
+\end{document}
