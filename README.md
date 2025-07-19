@@ -18,9 +18,10 @@ Key components include:
 
 ---
 
-## Publications
-
+## Resources
 - [here](https://realsoft.com/abstract/).
+- [Wiki](https://github.com/juhakm/theory/wiki)
+
 
 ---
 
