@@ -1,35 +1,52 @@
+"""
+Classical Past and Quantum Future Simulation
+
+This module models a temporal sequence of 2D grayscale images (representing an observer’s perspective)
+as a 3D signal across time and space. It fits this signal using sinusoidal basis functions in
+space and time, then reconstructs or extrapolates the sequence using:
+
+1. A nonlinear sinusoidal model (amplitude and phase optimization)
+2. A linear least-squares projection using a fixed frequency basis
+
+Usage:
+- Place image frames in 'simulations/paper2' named 'observer0.png', ..., 'observerN.png'
+- Adjust num_images, t0, resolution, and frequency parameters to control fitting behavior
+"""
+
+import os
 import numpy as np
+from typing import List, Tuple
 from PIL import Image
 from scipy.optimize import least_squares
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import os
+
 
 # === Configuration ===
 path = os.path.join("simulations", "paper2")
-num_images = 8
-image_paths = [os.path.join(path, f"observer{i}.png") for i in range(num_images)]
-num_freqs = 10
+num_images: int = 8
+image_paths: List[str] = [os.path.join(path, f"observer{i}.png") for i in range(num_images)]
+num_freqs: int = 10  # Number of sinusoidal frequencies per axis
+t0: int = 5  # Observer's "present": fit to frames [0, ..., t0-1]
 
-# === Load grayscale images ===
-def load_images(paths):
-    frames = []
+
+def load_images(paths: List[str], size: Tuple[int, int] = (32, 32)) -> np.ndarray:
+    """Load grayscale images, normalize to [0, 1], resize to common size, and return as (T, H, W) array."""
+    frames: List[np.ndarray] = []
     for p in paths:
-        img = Image.open(p).convert("L")
+        img = Image.open(p).convert("L").resize(size, Image.BILINEAR)
         frame = np.array(img, dtype=np.float32) / 255.0
         frames.append(frame)
     return np.stack(frames, axis=0)
 
-obs = load_images(image_paths)  # shape: (T, H, W)
-num_frames, height, width = obs.shape
 
-# === Define fitting boundary (observer's present) ===
-t0 = 5  # Observer has seen frames [0, ..., t0-1]
-obs_known = obs[:t0]
+def make_basis_vectors(T: int, H: int, W: int, num_freqs: int = 4) -> np.ndarray:
+    """
+    Construct a matrix of flattened 3D sinusoidal basis vectors over time and 2D space.
 
-
-def make_basis_vectors(T, H, W, num_freqs=4):
-    """Return matrix A with each column being a flattened basis component."""
+    Returns:
+        A (T*H*W, 2 * num_freqs^3) array
+    """
     t = np.linspace(0, 1, T)
     x = np.linspace(0, 1, H)
     y = np.linspace(0, 1, W)
@@ -43,23 +60,26 @@ def make_basis_vectors(T, H, W, num_freqs=4):
                 cos_term = np.cos(2 * np.pi * (i * tt + j * xx + k * yy))
                 components.append(sin_term.ravel())
                 components.append(cos_term.ravel())
-    A = np.stack(components, axis=1)  # Shape: (T*H*W, 2*num_freqs^3)
-    return A
+    return np.stack(components, axis=1)
 
-def fit_linear_model(obs, num_freqs=4):
+
+def fit_linear_model(obs: np.ndarray, num_freqs: int = 4) -> Tuple[np.ndarray, np.ndarray]:
+    """Fit a linear model to the observed tensor using sinusoidal basis."""
     T, H, W = obs.shape
     A = make_basis_vectors(T, H, W, num_freqs)
     b = obs.ravel()
     params, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
     return params, A
 
-def reconstruct_from_params(params, A, T, H, W):
+
+def reconstruct_from_params(params: np.ndarray, A: np.ndarray, T: int, H: int, W: int) -> np.ndarray:
+    """Reconstruct the 3D image volume from model parameters and basis matrix."""
     reconstruction = A @ params
     return reconstruction.reshape((T, H, W))
 
 
-# === Build 3D sinusoidal basis ===
-def make_basis(freqs_t, freqs_x, freqs_y, shape):
+def make_basis(freqs_t: np.ndarray, freqs_x: np.ndarray, freqs_y: np.ndarray, shape: Tuple[int, int, int]) -> Tuple[List[Tuple[float, float, float]], np.ndarray, np.ndarray]:
+    """Generate 3D sinusoidal bases (sin & cos) with phase-separated components."""
     T, H, W = shape
     t = np.linspace(0, 1, T, dtype=np.float32)
     x = np.linspace(0, 1, W, dtype=np.float32)
@@ -71,7 +91,7 @@ def make_basis(freqs_t, freqs_x, freqs_y, shape):
     cos_list = []
 
     for ft in freqs_t:
-        for fx in freqs_x:J
+        for fx in freqs_x:
             for fy in freqs_y:
                 phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy)
                 sin_list.append(np.sin(phase))
@@ -80,34 +100,43 @@ def make_basis(freqs_t, freqs_x, freqs_y, shape):
 
     return triples, np.stack(sin_list), np.stack(cos_list)
 
+
+# === Load and Prepare Data ===
+obs: np.ndarray = load_images(image_paths, size=(8, 8))  # shape (T, H, W)
+num_frames, height, width = obs.shape
+obs_known = obs[:t0]
+
+# === Build Nonlinear Basis ===
 freqs = np.linspace(0, 3, num_freqs)
 freq_triples, sin_basis, cos_basis = make_basis(freqs, freqs, freqs, obs.shape)
 num_components = len(freq_triples)
 
-# === Optimized model function ===
-def model(params):
+
+def model(params: np.ndarray) -> np.ndarray:
+    """Construct the predicted 3D signal volume from amplitude and phase parameters."""
     amps = params[:num_components]
     phases = params[num_components:]
     img = np.tensordot(amps * np.cos(phases), cos_basis, axes=(0, 0)) + \
           np.tensordot(amps * np.sin(phases), sin_basis, axes=(0, 0))
     return img.reshape(obs.shape)
 
-# === Residuals for fitting only past ===
-def residuals(params):
+
+def residuals(params: np.ndarray) -> np.ndarray:
+    """Compute flattened residual vector for frames 0 to t0-1 (the observer’s known past)."""
     prediction = model(params)
     return (prediction[:t0] - obs_known).ravel()
 
-# === Initial guess ===
+
+# === Initial Guess and Optimization ===
 np.random.seed(0)
 init_amps = 0.1 * np.random.randn(num_components)
 init_phases = 2 * np.pi * np.random.rand(num_components)
 params0 = np.concatenate([init_amps, init_phases])
 
-# === Fit only to known past ===
 result = least_squares(residuals, params0, verbose=2, max_nfev=500)
-Ψ_reconstructed = model(result.x)
+Ψ_reconstructed_nl = model(result.x)
 
-# === Build complex wavefunction Ψ(x,y,t) ===
+# === Optional: Construct Complex-Valued Ψ(x, y, t) ===
 t = np.linspace(0, 1, num_frames, dtype=np.float32)
 x = np.linspace(0, 1, width, dtype=np.float32)
 y = np.linspace(0, 1, height, dtype=np.float32)
@@ -115,32 +144,31 @@ tt, yy, xx = np.meshgrid(t, y, x, indexing='ij')
 
 amps = result.x[:num_components]
 phases = result.x[num_components:]
-
 Ψ = np.zeros((num_frames, height, width), dtype=np.complex128)
 for i, (ft, fx, fy) in enumerate(freq_triples):
     phase = 2 * np.pi * (ft * tt + fx * xx + fy * yy) + phases[i]
     Ψ += amps[i] * np.exp(1j * phase)
 
-## === Fit only to known past (fast linear version) ===
-params, A = fit_linear_model(obs_known, num_freqs=num_freqs)
-Ψ_reconstructed = reconstruct_from_params(params, A, *obs.shape)
+# === Linear Fit to Past, Extrapolated to Full Sequence ===
+params_lin, A_past = fit_linear_model(obs_known, num_freqs=num_freqs)
+A_full = make_basis_vectors(*obs.shape, num_freqs=num_freqs)
+Ψ_reconstructed_lin = reconstruct_from_params(params_lin, A_full, *obs.shape)
 
-# === Compare real vs predicted future ===
+# === Evaluate Prediction Accuracy ===
 actual_future = obs[t0:]
-predicted_future = Ψ_reconstructed[t0:]
-predicted_future = np.clip(predicted_future, 0.0, 1.0)
+predicted_future_nl = np.clip(Ψ_reconstructed_nl[t0:], 0.0, 1.0)
+predicted_future_lin = np.clip(Ψ_reconstructed_lin[t0:], 0.0, 1.0)
 
-# === Animate actual vs predicted ===
+# === Animation (Linear vs Actual) ===
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
-def update(frame_idx):
+def update(frame_idx: int) -> None:
     ax1.clear()
     ax2.clear()
-    ax1.set_title(f"Actual Observer t={t0 + frame_idx}")
-    ax2.set_title(f"Predicted t={t0 + frame_idx}")
-
+    ax1.set_title(f"Actual t={t0 + frame_idx}")
+    ax2.set_title(f"Linear Predicted t={t0 + frame_idx}")
     ax1.imshow(actual_future[frame_idx], cmap="gray")
-    ax2.imshow(predicted_future[frame_idx], cmap="viridis")
+    ax2.imshow(predicted_future_lin[frame_idx], cmap="viridis")
     for ax in [ax1, ax2]:
         ax.axis('off')
 
@@ -148,7 +176,8 @@ ani = animation.FuncAnimation(fig, update, frames=num_frames - t0, interval=500)
 plt.tight_layout()
 plt.show()
 
-# === Optional: error metric ===
+# === Error Reporting ===
+print("\nPrediction errors:")
 for i in range(num_frames - t0):
-    diff = np.abs(actual_future[i] - predicted_future[i])
-    print(f"t={t0+i}: max |obs - prediction| = {np.max(diff):.4f}, mean = {np.mean(diff):.4f}")
+    diff = np.abs(actual_future[i] - predicted_future_lin[i])
+    print(f"t={t0+i}: max |obs - pred| = {np.max(diff):.4f}, mean = {np.mean(diff):.4f}")
